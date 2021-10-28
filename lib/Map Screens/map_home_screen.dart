@@ -65,8 +65,8 @@ class _MapHomeScreenState extends State<MapHomeScreen>
     //     Provider.of<DbUserDiscSearchList>(context);
     final DbUserProfileInfo dbUserProfileInfo =
         Provider.of<DbUserProfileInfo>(context);
-    final DbUserProfileSearchInfo dbUserProfileSearchInfo =
-        Provider.of<DbUserProfileSearchInfo>(context);
+    // final DbUserProfileSearchInfo dbUserProfileSearchInfo =
+    //     Provider.of<DbUserProfileSearchInfo>(context);
     final dbUserFriendsList = Provider.of<List<AllFriendsObject>>(context);
     return LoadingOverlay(
       isLoading: showSpinner,
@@ -106,9 +106,9 @@ class _MapHomeScreenState extends State<MapHomeScreen>
                   ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: dbUserProfileSearchInfo.languages!.length,
+                      itemCount: dbUserProfileInfo.languages!.length,
                       itemBuilder: (context, index) {
-                        String item = dbUserProfileSearchInfo.languages![index];
+                        String item = dbUserProfileInfo.languages![index];
                         return Padding(
                           padding: const EdgeInsets.only(
                               left: 15, top: 3, bottom: 3),
@@ -128,7 +128,7 @@ class _MapHomeScreenState extends State<MapHomeScreen>
                           padding: const EdgeInsets.only(
                               left: 15, top: 3, bottom: 3),
                           child: Text(
-                            item.firstName!,
+                            item.firstName,
                             style: TextStyle(color: Colors.white, fontSize: 15),
                           ),
                         );

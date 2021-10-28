@@ -1,18 +1,18 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:math';
-import 'package:discovret1_0/Components/Widgets.dart';
-import 'package:discovret1_0/Components/background_screen.dart';
-import 'package:discovret1_0/Components/discovret_scaffold.dart';
-import 'package:discovret1_0/Constants/discovret_constants.dart';
-import 'package:discovret1_0/Components/icons.dart';
-import 'package:discovret1_0/FirebaseServices/auth_service.dart';
-import 'package:discovret1_0/Profile Screens/Photo_Screen/preview_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'dart:ffi';
+// import 'dart:io';
+// import 'dart:math';
+// import 'package:discovret1_0/Components/Widgets.dart';
+// import 'package:discovret1_0/Components/background_screen.dart';
+// import 'package:discovret1_0/Components/discovret_scaffold.dart';
+// import 'package:discovret1_0/Constants/discovret_constants.dart';
+// import 'package:discovret1_0/Components/icons.dart';
+// import 'package:discovret1_0/FirebaseServices/auth_service.dart';
+// import 'package:discovret1_0/Profile Screens/Photo_Screen/preview_screen.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter_image_compress/flutter_image_compress.dart';
+// import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 // import 'package:camera/camera.dart';
 import 'dart:async';
@@ -26,9 +26,6 @@ class AddProfilePhoto extends StatefulWidget {
 }
 
 class _AddProfilePhotoState extends State<AddProfilePhoto> {
-
-   
-
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // CameraController? cameraController;
@@ -152,69 +149,69 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // child: SafeArea(
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.stretch,
-        //     children: [
-        //       Expanded(
-        //         flex: 1,
-        //         child: _cameraPreviewWidget(),
-        //       ),
-        //       Align(
-        //         alignment: Alignment.bottomCenter,
-        //         child: Container(
-        //           height: deviceHeight * .15,
-        //           width: double.infinity,
-        //           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        //           color: Colors.black,
-        //           child: Column(
-        //             children: [
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.center,
-        //                 children: [
-        //                   Icon(
-        //                     Icons.lock_outline,
-        //                     color: Colors.white,
-        //                     size: 17,
-        //                   ),
-        //                   Padding(
-        //                     padding: const EdgeInsets.only(left: 8),
-        //                     child: SubjectIconTextWhite(
-        //                       text: 'locked in portrait mode',
-        //                       fontSize: 9,
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //               Padding(
-        //                 padding: const EdgeInsets.only(top: 12),
-        //                 child: Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                   children: [
-        //                     _cameraToggleRowWidget(),
-        //                     Padding(
-        //                       padding:
-        //                           const EdgeInsets.symmetric(horizontal: 20),
-        //                       child: _cameraControlWidget(context),
-        //                     ),
-        //                     IconButton(
-        //                         color: Colors.white,
-        //                         icon: Icon(Icons.arrow_back_outlined),
-        //                         onPressed: () {
-        //                           Navigator.pop(context);
-        //                           _cameraOff(context);
-        //                         }),
-        //                   ],
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       )
-        //     ],
-        //   ),
-        // ),
-      ),
+          // child: SafeArea(
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.stretch,
+          //     children: [
+          //       Expanded(
+          //         flex: 1,
+          //         child: _cameraPreviewWidget(),
+          //       ),
+          //       Align(
+          //         alignment: Alignment.bottomCenter,
+          //         child: Container(
+          //           height: deviceHeight * .15,
+          //           width: double.infinity,
+          //           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          //           color: Colors.black,
+          //           child: Column(
+          //             children: [
+          //               Row(
+          //                 mainAxisAlignment: MainAxisAlignment.center,
+          //                 children: [
+          //                   Icon(
+          //                     Icons.lock_outline,
+          //                     color: Colors.white,
+          //                     size: 17,
+          //                   ),
+          //                   Padding(
+          //                     padding: const EdgeInsets.only(left: 8),
+          //                     child: SubjectIconTextWhite(
+          //                       text: 'locked in portrait mode',
+          //                       fontSize: 9,
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
+          //               Padding(
+          //                 padding: const EdgeInsets.only(top: 12),
+          //                 child: Row(
+          //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //                   children: [
+          //                     _cameraToggleRowWidget(),
+          //                     Padding(
+          //                       padding:
+          //                           const EdgeInsets.symmetric(horizontal: 20),
+          //                       child: _cameraControlWidget(context),
+          //                     ),
+          //                     IconButton(
+          //                         color: Colors.white,
+          //                         icon: Icon(Icons.arrow_back_outlined),
+          //                         onPressed: () {
+          //                           Navigator.pop(context);
+          //                           _cameraOff(context);
+          //                         }),
+          //                   ],
+          //                 ),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          ),
     );
     // if (!controller.value.isInitialized) {
     //   return Container();

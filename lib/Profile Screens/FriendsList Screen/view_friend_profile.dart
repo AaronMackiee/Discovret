@@ -5,6 +5,7 @@ import 'package:discovret1_0/FirebaseServices/db_models.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/view_friend_info.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/view_friends_photo.dart';
 import 'package:discovret1_0/Profile Screens/Photo_Screen/view_photo.dart';
+import 'package:discovret1_0/Provider%20Services/provider_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:discovret1_0/Constants/discovret_constants.dart';
 import 'package:flutter/material.dart';
@@ -14,46 +15,63 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ViewProfileFriend extends StatelessWidget {
-  static const String id = 'ViewProfileFriendScreen';
-  final int? photoCount;
+  static const String id = 'ViewProfileFriend';
+  // final int photoCount;
+  // final int reviewCount;
+  // final int profileAccuracyRating;
+  // final int safetyRating;
+  // final String profilePhoto;
+  // final String firstName;
+  // final String lastName;
+  // final String? bio;
+  // final int? visitsThisYear;
+  // final int? daysTillExp;
+  // final String biologicalSex;
+  // final String? gender;
+  // final int age;
+  // final String interestedIn;
+  // final String relationshipStatus;
+  // final String firstLanguage;
+  // final List<dynamic> userPhotos;
+  // final List<dynamic> allFriends;
+  // final List<dynamic> allBusinesses;
+  // final List<dynamic> allPlaces;
+  // final List<dynamic>? countriedLivedIn;
+  // final List<dynamic>? culturalHeritage;
+  // final List<dynamic>? hobbiesInterest;
+  // final List<dynamic>? languages;
+  // final List<dynamic>? mentoringIn;
+  // final List<dynamic>? religionsPracticed;
 
-  final String? review;
-  final String? profilePhoto;
-  final String? firstName;
-  final String? lastName;
-  final String? bio;
-  final int? rating;
-  final int? visitsThisYear;
-  final int? daysTillExp;
-  final String? biologicalSex;
-  final String? gender;
-  final int? age;
-  final String? interestedIn;
-  final String? relationshipStatus;
-  final String? firstLanguage;
-  final List<dynamic>? photos;
-  final List<dynamic>? allFriends;
-
-  ViewProfileFriend(
-      {Key? key,
-      this.photoCount,
-      this.review,
-      this.photos,
-      this.profilePhoto,
-      this.firstName,
-      this.lastName,
-      this.bio,
-      this.rating,
-      this.visitsThisYear,
-      this.daysTillExp,
-      this.biologicalSex,
-      this.gender,
-      this.age,
-      this.interestedIn,
-      this.relationshipStatus,
-      this.firstLanguage,
-      this.allFriends})
-      : super(key: key);
+  // ViewProfileFriend(
+  //     {Key? key,
+  //     required this.profileAccuracyRating,
+  //     required this.photoCount,
+  //     required this.safetyRating,
+  //     required this.reviewCount,
+  //     required this.userPhotos,
+  //     required this.profilePhoto,
+  //     required this.firstName,
+  //     required this.lastName,
+  //     this.bio,
+  //     this.visitsThisYear,
+  //     this.daysTillExp,
+  //     required this.biologicalSex,
+  //     this.gender,
+  //     required this.age,
+  //     required this.interestedIn,
+  //     required this.relationshipStatus,
+  //     required this.firstLanguage,
+  //     required this.allFriends,
+  //     required this.allBusinesses,
+  //     required this.allPlaces,
+  //     this.countriedLivedIn,
+  //     this.culturalHeritage,
+  //     this.hobbiesInterest,
+  //     this.languages,
+  //     this.mentoringIn,
+  //     this.religionsPracticed})
+  //     : super(key: key);
 
   // int get getPhotoCount {
   //   int length = photos.length;
@@ -63,13 +81,15 @@ class ViewProfileFriend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as ViewProfileFriendObject;
     final _dbAllFriendsList = Provider.of<List<AllFriendsObject>>(context);
-    int photoCount = photos!.length;
+    int photoCount = args.userPhotos.length;
     List<AllFriendsObject> mutualFriends = [];
     AllFriendsObject friend;
 
     for (friend in _dbAllFriendsList) {
-      if (allFriends!.contains(friend.uid)) {
+      if (args.allFriends.contains(friend.uid)) {
         mutualFriends.add(friend);
       }
     }
@@ -103,7 +123,7 @@ class ViewProfileFriend extends StatelessWidget {
                   radius: 75,
                   child: CircleAvatar(
                     radius: 70,
-                    backgroundImage: NetworkImage(profilePhoto!),
+                    backgroundImage: NetworkImage(args.profilePhoto),
                   ),
                 ),
                 Positioned(
@@ -125,7 +145,7 @@ class ViewProfileFriend extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.contain,
                 child: Text(
-                  '$firstName $lastName',
+                  '${args.firstName} ${args.lastName}',
                   style: TextStyle(
                       fontFamily: 'Syne Mono',
                       // fontSize: 34,
@@ -134,24 +154,28 @@ class ViewProfileFriend extends StatelessWidget {
                 ),
               ),
             ),
+            (args.bio == '')
+                ? SizedBox(
+                    height: 5,
+                  )
+                : Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Text(
+                        '${args.bio}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, color: Colors.white),
+                      ),
+                    ),
+                  ),
             SizedBox(height: 5),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(
-                  '$bio',
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal, color: Colors.white),
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
               child: Row(
                 children: [
                   Flexible(
-                    flex: 2,
+                    flex: 1,
                     fit: FlexFit.tight,
                     child: Container(
                       height: 90,
@@ -166,33 +190,33 @@ class ViewProfileFriend extends StatelessWidget {
                         children: [
                           Center(
                             child: Icon(
-                              Icons.star_border_rounded,
-                              size: 37,
+                              Icons.warning_amber,
+                              size: 30,
                               color: kDiscovretGreen,
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 1),
                             child: Text(
-                              'Rating: Excellent',
+                              'Safety Rating',
                               // textAlign: TextAlign.left,
                               style: TextStyle(
-                                  fontSize: kTextSize15,
+                                  fontSize: 14,
                                   letterSpacing: 0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 1),
+                            padding: const EdgeInsets.symmetric(vertical: 2),
                             child: Text(
-                              '$rating%',
+                              '${args.safetyRating}% / ${args.reviewCount.toString()} ${args.reviewCount == 1 ? 'Review' : 'Reviews'}',
                               // textAlign: TextAlign.left,
                               style: TextStyle(
-                                  fontSize: kTextSize15,
+                                  fontSize: 13,
                                   letterSpacing: 0,
                                   // fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
+                                  color: Colors.black),
                             ),
                           ),
                         ],
@@ -214,85 +238,89 @@ class ViewProfileFriend extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.emoji_people_outlined,
-                            size: 30,
+                            // Icons.emoji_people_outlined,
+                            Icons.person_outlined,
+                            size: 32,
                             color: kDiscovretGreen,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 1),
-                            child: Text(
-                              'Visits',
-                              // textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: kTextSize15,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 10),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                'Profile Accuracy Rating',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 1),
                             child: Text(
-                              '$visitsThisYear',
+                              '${args.profileAccuracyRating}% / ${args.reviewCount} ${args.reviewCount == 1 ? 'Review' : 'Reviews'}',
                               // textAlign: TextAlign.left,
                               style: TextStyle(
-                                  fontSize: kTextSize15,
+                                  fontSize: 13,
                                   letterSpacing: 0,
                                   // fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
+                                  color: Colors.black),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: Container(
-                      height: 90,
-                      // width: 250,
-                      margin: EdgeInsets.symmetric(horizontal: 2),
-                      decoration: BoxDecoration(
-                        color: kclearContainer,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.timer,
-                            size: 30,
-                            color: kDiscovretGreen,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 1),
-                            child: Text(
-                              'Days',
-                              // textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: kTextSize15,
-                                  letterSpacing: 0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 1),
-                            child: Text(
-                              '$daysTillExp',
-                              // textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: kTextSize15,
-                                  letterSpacing: 0,
-                                  // fontWeight: FontWeight.bold,
-                                  color: Colors.blueGrey),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Flexible(
+                  //   flex: 1,
+                  //   fit: FlexFit.tight,
+                  //   child: Container(
+                  //     height: 90,
+                  //     // width: 250,
+                  //     margin: EdgeInsets.symmetric(horizontal: 2),
+                  //     decoration: BoxDecoration(
+                  //       color: kclearContainer,
+                  //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                  //     ),
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Icon(
+                  //           Icons.timer,
+                  //           size: 30,
+                  //           color: kDiscovretGreen,
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(vertical: 1),
+                  //           child: Text(
+                  //             'Days',
+                  //             // textAlign: TextAlign.left,
+                  //             style: TextStyle(
+                  //                 fontSize: kTextSize15,
+                  //                 letterSpacing: 0,
+                  //                 fontWeight: FontWeight.bold,
+                  //                 color: Colors.black),
+                  //           ),
+                  //         ),
+                  //         Padding(
+                  //           padding: const EdgeInsets.symmetric(vertical: 1),
+                  //           child: Text(
+                  //             '$daysTillExp',
+                  //             // textAlign: TextAlign.left,
+                  //             style: TextStyle(
+                  //                 fontSize: kTextSize15,
+                  //                 letterSpacing: 0,
+                  //                 // fontWeight: FontWeight.bold,
+                  //                 color: Colors.black),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -325,23 +353,22 @@ class ViewProfileFriend extends StatelessWidget {
             ),
             InfoOutputCard(
               textStringParent: 'Biological Sex',
-              textStringchild: biologicalSex,
+              textStringchild: args.biologicalSex,
             ),
             InfoOutputCard(
-              textStringParent: 'Gender:',
-              textStringchild: gender,
-            ),
+                textStringParent: 'Gender:',
+                textStringchild: (args.gender == '') ? args.biologicalSex : args.gender),
             InfoOutputCard(
               textStringParent: 'Age:',
-              textStringchild: '$age',
+              textStringchild: args.age.toString(),
             ),
             InfoOutputCard(
               textStringParent: 'Interested In:',
-              textStringchild: interestedIn,
+              textStringchild: args.interestedIn,
             ),
             InfoOutputCard(
               textStringParent: 'Relationship Status:',
-              textStringchild: relationshipStatus,
+              textStringchild: args.relationshipStatus,
             ),
             SizedBox(height: 10),
             Padding(
@@ -409,34 +436,40 @@ class ViewProfileFriend extends StatelessWidget {
                 itemCount: mutualFriends.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final mutualFriend = mutualFriends[index];
+                  final friendObject = mutualFriends[index];
                   return MutualFriendAvatar(
-                    firstName: mutualFriend.firstName!,
-                    lastName: mutualFriend.lastName!,
-                    profileImage: mutualFriend.profilePicture!,
+                    firstName: friendObject.firstName,
+                    lastName: friendObject.lastName,
+                    profileImage: friendObject.profilePicture,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ViewProfileFriend(
-                            firstLanguage: mutualFriend.firstLanguage,
-                            gender: 'male',
-                            rating: 98,
-                            firstName: mutualFriend.firstName,
-                            lastName: mutualFriend.lastName,
-                            bio: mutualFriend.bio,
-                            daysTillExp: 73,
-                            visitsThisYear: 1,
-                            profilePhoto: mutualFriend.profilePicture,
-                            relationshipStatus: mutualFriend.relationshipStatus,
-                            biologicalSex: mutualFriend.sex,
-                            age: mutualFriend.age,
-                            interestedIn: mutualFriend.interestedIn,
-                            photos: mutualFriend.userPictures,
-                            allFriends: mutualFriend.allFriends,
-                          ),
-                        ),
-                      );
+                      Navigator.pushNamed(
+                            context, 
+                            ViewProfileFriend.id,
+                            arguments: 
+                            ViewProfileFriendObject(
+                                photoCount: friendObject.userPictures.length,
+                                firstLanguage: friendObject.firstLanguage,
+                                gender: friendObject.gender,
+                                profileAccuracyRating: friendObject.profileAccuracyRating,
+                                reviewCount: friendObject.reviewCount,
+                                safetyRating: friendObject.safetyRating,
+                                firstName: friendObject.firstName,
+                                lastName: friendObject.lastName,
+                                bio: friendObject.bio,
+                                daysTillExp: 73,
+                                visitsThisYear: friendObject.visitsThisYear,
+                                profilePhoto: friendObject.profilePicture,
+                                relationshipStatus:
+                                    friendObject.relationshipStatus,
+                                biologicalSex: friendObject.sex,
+                                age: friendObject.age,
+                                interestedIn: friendObject.interestedIn,
+                                userPhotos: friendObject.userPictures,
+                                allFriends: friendObject.allFriends,
+                                allPlaces: friendObject.allPlaces,
+                                allBusinesses: friendObject.allBusinesses,
+                              ),
+                            );
                     },
                   );
                 },
@@ -471,11 +504,11 @@ class ViewProfileFriend extends StatelessWidget {
             GridView.builder(
               physics: ScrollPhysics(),
               shrinkWrap: true,
-              itemCount: photos!.length,
+              itemCount: args.userPhotos.length,
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemBuilder: (context, index) {
-                final photo = photos![index];
+                final photo = args.userPhotos[index];
                 return PictureGridTile(
                   cardimage: NetworkImage(photo),
                   color: Colors.white,
@@ -488,7 +521,7 @@ class ViewProfileFriend extends StatelessWidget {
                             builder: (context) => ViewFriendsPhoto(
                                 selectedPhoto: photo,
                                 indexPhotos: index,
-                                photos: photos)));
+                                photos: args.userPhotos)));
                   },
                 );
               },

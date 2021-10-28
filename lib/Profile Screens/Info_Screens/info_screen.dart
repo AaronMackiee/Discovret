@@ -77,10 +77,6 @@ class _ProfileInfoState extends State<ProfileInfo> {
         Provider.of<UserProfileSettings>(context);
     final DbUserProfileInfo dbUserProfileInfo =
         Provider.of<DbUserProfileInfo>(context);
-    final DbUserProfileSearchInfo dbUserProfileSearchInfo =
-        Provider.of<DbUserProfileSearchInfo>(context);
-    final DbUserDiscSearchList dbUserSearchList =
-        Provider.of<DbUserDiscSearchList>(context);
     String? gender = userProfileInfo.getGenderHint();
     // List<int> selectedItems = [];
 
@@ -123,7 +119,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                         padding: const EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.info_outline_rounded,
-                          size: deviceWidth * .30,
+                          size: deviceWidth * .25,
                           color: Colors.white,
                         ),
                       ),
@@ -410,10 +406,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: dbUserProfileSearchInfo.languages!.length,
+                        itemCount: dbUserProfileInfo.languages!.length,
                         itemBuilder: (context, index) {
-                          String item =
-                              dbUserProfileSearchInfo.languages![index];
+                          String item = dbUserProfileInfo.languages![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -436,7 +431,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'Languages');
+                      _db.deleteProfileInfoList(
+                          field: 'Languages',
+                          values: userProfileInfo.listOtherLanguages);
                     },
                     hint: 'Languages',
                     searchHint: 'Languages',
@@ -474,11 +471,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount:
-                            dbUserProfileSearchInfo.countriesLivedIn!.length,
+                        itemCount: dbUserProfileInfo.countriesLivedIn!.length,
                         itemBuilder: (context, index) {
                           String item =
-                              dbUserProfileSearchInfo.countriesLivedIn![index];
+                              dbUserProfileInfo.countriesLivedIn![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -500,7 +496,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'CountriesLivedIn');
+                      _db.deleteProfileInfoList(
+                          field: 'CountriesLivedIn',
+                          values: userProfileInfo.listCountriesLivedIn);
                     },
                     textStringParent: "Countries Lived In:",
                     hint: 'Countries',
@@ -540,11 +538,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount:
-                            dbUserProfileSearchInfo.culturalHeritage!.length,
+                        itemCount: dbUserProfileInfo.culturalHeritage!.length,
                         itemBuilder: (context, index) {
                           String item =
-                              dbUserProfileSearchInfo.culturalHeritage![index];
+                              dbUserProfileInfo.culturalHeritage![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -565,7 +562,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'CulturalHeritage');
+                      _db.deleteProfileInfoList(
+                          field: 'CulturalHeritage',
+                          values: userProfileInfo.listCultures);
                     },
                     textStringParent: "Cultural Heritage:",
                     hint: 'Cultures',
@@ -604,10 +603,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: dbUserProfileSearchInfo.religion!.length,
+                        itemCount: dbUserProfileInfo.religion!.length,
                         itemBuilder: (context, index) {
-                          String item =
-                              dbUserProfileSearchInfo.religion![index];
+                          String item = dbUserProfileInfo.religion![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -629,7 +627,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'Religion');
+                      _db.deleteProfileInfoList(
+                          field: 'Religion',
+                          values: userProfileInfo.selectedReligions);
                     },
                     textStringParent: "Religions Practiced:",
                     hint: 'Religions',
@@ -670,11 +670,10 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount:
-                            dbUserProfileSearchInfo.hobbiesInterest!.length,
+                        itemCount: dbUserProfileInfo.hobbiesInterest!.length,
                         itemBuilder: (context, index) {
                           String item =
-                              dbUserProfileSearchInfo.hobbiesInterest![index];
+                              dbUserProfileInfo.hobbiesInterest![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -695,7 +694,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'HobbiesInterest');
+                      _db.deleteProfileInfoList(
+                          field: 'HobbiesInterest',
+                          values: userProfileInfo.listInterest);
                     },
                     textStringParent: "Hobbies/Interest:",
                     hint: 'Hobbies/Interest',
@@ -736,10 +737,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                     listViewWidget: ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: dbUserProfileSearchInfo.mentoringIn!.length,
+                        itemCount: dbUserProfileInfo.mentoringIn!.length,
                         itemBuilder: (context, index) {
-                          String item =
-                              dbUserProfileSearchInfo.mentoringIn![index];
+                          String item = dbUserProfileInfo.mentoringIn![index];
                           return Padding(
                             padding: const EdgeInsets.only(
                                 left: 15, top: 3, bottom: 3),
@@ -761,7 +761,9 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       });
                     },
                     onPressedClearAll: () {
-                      _db.deleteAllProfileInfoList(field: 'MentoringIn');
+                      _db.deleteProfileInfoList(
+                          field: 'MentoringIn',
+                          values: userProfileInfo.listMentoringIn);
                     },
                     textStringParent: "Mentoring Others In:",
                     hint: 'Mentor Topics',

@@ -864,6 +864,14 @@ class _PersonalAccountState extends State<PersonalAccount>
                                       hintText: 'Sex',
                                       list: userProfileInfo.listSex,
                                     ),
+                                    HeaderSpacer(header: 'Gender'),
+                                    TextFormCardUnrequired(
+                                      hintText: 'Gender: if different from sex',
+                                      value: userProfileInfo.gender,
+                                      onChanged: (value) {
+                                        userProfileInfo.gender = value;
+                                      },
+                                    ),
                                     HeaderSpacer(header: 'Interested In'),
                                     DropDownFormCardStr(
                                       value: userProfileInfo.interestedIn,
@@ -930,6 +938,10 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                 onPressed: () {
                                                   print(imageUrl);
                                                   checkProfileFormState();
+                                                  if (userProfileInfo.gender ==
+                                                      null) {
+                                                    userProfileInfo.gender = '';
+                                                  }
                                                   if (isValidFormProfile ==
                                                       true) {
                                                     _nestedTabController!
@@ -1547,7 +1559,12 @@ class _PersonalAccountState extends State<PersonalAccount>
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    Expanded(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: double.infinity,
+                                      ),
+                                    ),
                                     UserImage(onFileChanged: (file) {
                                       setState(() {
                                         this.imagefile = file;
@@ -1614,8 +1631,8 @@ class _PersonalAccountState extends State<PersonalAccount>
                                     ),
                                     Expanded(
                                       child: SizedBox(
-                                        width: double.infinity,
-                                        height: 20,
+                                        width: 50,
+                                        height: double.infinity,
                                       ),
                                     ),
                                     Padding(
@@ -1725,7 +1742,7 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                         userProfileInfo
                                                                 .profilePicture =
                                                             imageUrl;
-                                                            
+
                                                         _db
                                                             .collection(
                                                                 'UserProfileInfo')
@@ -1733,6 +1750,10 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                             .set(
                                                                 {
                                                               'Bio': '',
+                                                              'SafetyRating': 0,
+                                                              'ProfileAccuracyRating':
+                                                                  0,
+                                                              'ReviewCount': 0,
                                                               'Uid': _auth
                                                                   .currentUser!
                                                                   .uid,
@@ -1773,11 +1794,35 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                                   FieldValue
                                                                       .arrayUnion(
                                                                           []),
-                                                              'Confirmations':
+                                                              'AllPlaces':
                                                                   FieldValue
                                                                       .arrayUnion(
                                                                           []),
-                                                              'ActiveFriends':
+                                                              'AllBusinesses':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'Languages':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'CountriesLivedIn':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'CulturalHeritage':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'Religion':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'HobbiesInterest':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          []),
+                                                              'MentoringIn':
                                                                   FieldValue
                                                                       .arrayUnion(
                                                                           []),
@@ -1786,34 +1831,34 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                                     merge:
                                                                         true));
 
-                                                        _db
-                                                            .collection(
-                                                                'UserProfileSearchInfo')
-                                                            .doc(user.uid)
-                                                            .set({
-                                                          'Languages':
-                                                              FieldValue
-                                                                  .arrayUnion(
-                                                                      []),
-                                                          'CountriesLivedIn':
-                                                              FieldValue
-                                                                  .arrayUnion(
-                                                                      []),
-                                                          'CulturalHeritage':
-                                                              FieldValue
-                                                                  .arrayUnion(
-                                                                      []),
-                                                          'Religion': FieldValue
-                                                              .arrayUnion([]),
-                                                          'HobbiesInterest':
-                                                              FieldValue
-                                                                  .arrayUnion(
-                                                                      []),
-                                                          'MentoringIn':
-                                                              FieldValue
-                                                                  .arrayUnion(
-                                                                      []),
-                                                        });
+                                                        // _db
+                                                        //     .collection(
+                                                        //         'UserProfileSearchInfo')
+                                                        //     .doc(user.uid)
+                                                        //     .set({
+                                                        //   'Languages':
+                                                        //       FieldValue
+                                                        //           .arrayUnion(
+                                                        //               []),
+                                                        //   'CountriesLivedIn':
+                                                        //       FieldValue
+                                                        //           .arrayUnion(
+                                                        //               []),
+                                                        //   'CulturalHeritage':
+                                                        //       FieldValue
+                                                        //           .arrayUnion(
+                                                        //               []),
+                                                        //   'Religion': FieldValue
+                                                        //       .arrayUnion([]),
+                                                        //   'HobbiesInterest':
+                                                        //       FieldValue
+                                                        //           .arrayUnion(
+                                                        //               []),
+                                                        //   'MentoringIn':
+                                                        //       FieldValue
+                                                        //           .arrayUnion(
+                                                        //               []),
+                                                        // });
                                                         _db
                                                             .collection(
                                                                 'UserDiscSearchList')
@@ -1828,6 +1873,16 @@ class _PersonalAccountState extends State<PersonalAccount>
                                                                 SetOptions(
                                                                     merge:
                                                                         true));
+                                                        _db
+                                                            .collection(
+                                                                'UserProfileInfo')
+                                                            .doc(user.uid)
+                                                            .collection(
+                                                                'FriendReviews');
+                                                        _db.collection(
+                                                            'FriendConfirmations');
+                                                        _db.collection(
+                                                            'Compliments');
 
                                                         Navigator
                                                             .pushReplacementNamed(

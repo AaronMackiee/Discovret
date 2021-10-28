@@ -31,33 +31,216 @@ class _UserImageState extends State<UserImage> {
 
   Future _selectPhoto() async {
     await showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      backgroundColor: Colors.white,
       context: context,
-      builder: (context) => BottomSheet(
-        onClosing: () {},
-        builder: (context) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.camera),
-              title: Text('Camera'),
-              onTap: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.camera);
-              },
+      builder: (context) => Theme(
+        data: ThemeData(canvasColor: Colors.transparent),
+        child: BottomSheet(
+          onClosing: () {},
+          builder: (context) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Container(
+                        height: 35,
+                        width: 35,
+                        child: Image(
+                          fit: BoxFit.contain,
+                          image: AssetImage("assets/Disc_Map2.png"),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: SubjectIconText(
+                        text: 'Photo Options',
+                        fontSize: 22,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  thickness: 5,
+                  color: kDiscovretYellow,
+                ),
+                ListTile(
+                  leading: Icon(Icons.camera),
+                  title: Text('Camera'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.filter),
+                  title: Text('Pick a File'),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    _pickImage(ImageSource.gallery);
+                  },
+                )
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.filter),
-              title: Text('Pick a File'),
-              onTap: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.gallery);
-              },
-            )
-          ],
+          ),
         ),
       ),
     );
   }
+
+  // showModalBottomSheet(
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10.0),
+  //           ),
+  //           context: context,
+  //           isScrollControlled: true,
+  //           builder: (context) => SingleChildScrollView(
+  //             child: Container(
+  //               decoration: BoxDecoration(
+  //                 color: Colors.white,
+  //               ),
+  //               // padding: EdgeInsets.only(
+  //               //     bottom: MediaQuery.of(context).viewInsets.bottom),
+  //               child: Padding(
+  //                 padding:
+  //                     const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+  //                 child: Column(
+  //                   mainAxisAlignment: MainAxisAlignment.center,
+  //                   children: [
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: [
+  //                         DiscCoin(
+  //                           size: 37,
+  //                         ),
+  //                         Padding(
+  //                           padding: const EdgeInsets.only(left: 10),
+  //                           child: SubjectIconText(
+  //                             text: 'Crypto Rewards Info',
+  //                             fontSize: 22,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Divider(
+  //                       height: 30,
+  //                       thickness: 5,
+  //                       color: kDiscovretYellow,
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(
+  //                           vertical: 10, horizontal: 5),
+  //                       child: Text(
+  //                         'Discovered Friend',
+  //                         style: TextStyle(
+  //                             fontSize: 18,
+  //                             fontWeight: FontWeight.bold,
+  //                             color: kDiscovretBlue),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         'Newly confirmed friend = 0.25 Disc coin',
+  //                         style: TextStyle(
+  //                             fontSize: 15,
+  //                             fontWeight: FontWeight.normal,
+  //                             color: Colors.black),
+  //                       ),
+  //                     ),
+  //                     Divider(
+  //                       height: 10,
+  //                       thickness: 0.5,
+  //                       color: Colors.blueGrey,
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         'Close Friend',
+  //                         style: TextStyle(
+  //                             fontSize: 18,
+  //                             fontWeight: FontWeight.bold,
+  //                             color: kDiscovretBlue),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         '5 visits per year = 1 Disc coin',
+  //                         style: TextStyle(
+  //                             fontSize: 15,
+  //                             fontWeight: FontWeight.normal,
+  //                             color: Colors.black),
+  //                       ),
+  //                     ),
+  //                     Divider(
+  //                       height: 10,
+  //                       thickness: 0.5,
+  //                       color: Colors.blueGrey,
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         'Active Friend',
+  //                         style: TextStyle(
+  //                             fontSize: 18,
+  //                             fontWeight: FontWeight.bold,
+  //                             color: kDiscovretBlue),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         '1 visit per year = 0.25 Disc',
+  //                         style: TextStyle(
+  //                             fontSize: 15,
+  //                             fontWeight: FontWeight.normal,
+  //                             color: Colors.black),
+  //                       ),
+  //                     ),
+  //                     Divider(
+  //                       height: 10,
+  //                       thickness: 0.5,
+  //                       color: Colors.blueGrey,
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         'Inactive Friend',
+  //                         style: TextStyle(
+  //                             fontSize: 18,
+  //                             fontWeight: FontWeight.bold,
+  //                             color: kDiscovretBlue),
+  //                       ),
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.symmetric(vertical: 10),
+  //                       child: Text(
+  //                         '1 year with no visit = - 0.25 Disc coin',
+  //                         style: TextStyle(
+  //                             fontSize: 15,
+  //                             fontWeight: FontWeight.normal,
+  //                             color: Colors.black),
+  //                       ),
+  //                     ),
+  //                     //
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
 
   Future _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(

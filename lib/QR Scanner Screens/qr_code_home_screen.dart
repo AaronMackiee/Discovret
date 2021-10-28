@@ -90,23 +90,23 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                   version: QrVersions.auto,
                   size: deviceWidth * .75,
                   gapless: false,
-                  // embeddedImage:
-                  //     NetworkImage('${dbUserProfileInfo.profilePicture}'),
-                  // embeddedImageStyle: QrEmbeddedImageStyle(
-                  //   size: Size(deviceWidth * .10, deviceWidth * .10),
-                  // ),
-                ),
-                Container(
-                  height: 65,
-                  width: 65,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(90)),
-                    border: Border.all(color: Colors.white, width: 3.5),
+                  embeddedImage:
+                      NetworkImage('${dbUserProfileInfo.profilePicture}'),
+                  embeddedImageStyle: QrEmbeddedImageStyle(
+                    size: Size(deviceWidth * .10, deviceWidth * .10),
                   ),
-                  child: AppRoundImage.url(dbUserProfileInfo.profilePicture!,
-                      height: 60, width: 60),
                 ),
+                // Container(
+                //   height: 65,
+                //   width: 65,
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     borderRadius: BorderRadius.all(Radius.circular(90)),
+                //     border: Border.all(color: Colors.white, width: 3.5),
+                //   ),
+                //   child: AppRoundImage.url(dbUserProfileInfo.profilePicture!,
+                //       height: 60, width: 60),
+                // ),
               ]),
               SizedBox(height: 5),
               Row(

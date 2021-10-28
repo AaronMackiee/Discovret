@@ -4,6 +4,7 @@ import 'package:discovret1_0/Components/widgets.dart';
 import 'package:discovret1_0/FirebaseServices/db_models.dart';
 import 'package:discovret1_0/Provider Services/profile_info_provider.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/view_friend_profile.dart';
+import 'package:discovret1_0/Provider%20Services/provider_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:discovret1_0/Constants/discovret_constants.dart';
 import 'package:flutter/material.dart';
@@ -116,7 +117,7 @@ class _AllFriendsListState extends State<AllFriendsList> {
             // ),
             // FriendTypeInfoCard('Disc Coin Information'),
             SizedBox(
-              height: 20,
+              height: 30,
             ),
             nullSafetyWidget(
               count: _dbAllFriendsList.length,
@@ -137,7 +138,7 @@ class _AllFriendsListState extends State<AllFriendsList> {
                   ),
                   Container(
                     child: SubjectIconTextWhite(
-                      text: 'No active friends at this time',
+                      text: 'No friends at this time',
                       fontSize: 16,
                     ),
                   ),
@@ -161,29 +162,34 @@ class _AllFriendsListState extends State<AllFriendsList> {
                           //     list: userProfileInfo.listActiveFriends);
                         },
                         onPressedProfile: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewProfileFriend(
+                          Navigator.pushNamed(
+                            context, 
+                            ViewProfileFriend.id,
+                            arguments: 
+                            ViewProfileFriendObject(
+                                photoCount: friendObject.userPictures.length,
                                 firstLanguage: friendObject.firstLanguage,
-                                gender: 'male',
-                                rating: 98,
+                                gender: friendObject.gender,
+                                profileAccuracyRating: friendObject.profileAccuracyRating,
+                                reviewCount: friendObject.reviewCount,
+                                safetyRating: friendObject.safetyRating,
                                 firstName: friendObject.firstName,
                                 lastName: friendObject.lastName,
                                 bio: friendObject.bio,
                                 daysTillExp: 73,
-                                visitsThisYear: 1,
+                                visitsThisYear: friendObject.visitsThisYear,
                                 profilePhoto: friendObject.profilePicture,
                                 relationshipStatus:
                                     friendObject.relationshipStatus,
                                 biologicalSex: friendObject.sex,
                                 age: friendObject.age,
                                 interestedIn: friendObject.interestedIn,
-                                photos: friendObject.userPictures,
+                                userPhotos: friendObject.userPictures,
                                 allFriends: friendObject.allFriends,
+                                allPlaces: friendObject.allPlaces,
+                                allBusinesses: friendObject.allBusinesses,
                               ),
-                            ),
-                          );
+                            );
                         });
                   }),
             )!

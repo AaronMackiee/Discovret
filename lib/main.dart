@@ -82,17 +82,51 @@ class Discovret extends StatelessWidget {
         //         userPictures: [],
         //       )
         //     ),
+        StreamProvider<List<FriendListObject>>(
+            create: (BuildContext context) => _db.getListOfFriends(),
+            initialData: [
+              FriendListObject(
+                daysTillExp: 0,
+                firstVisit: Timestamp.now(),
+                friendUid: '',
+                isSafe: true,
+                lastVisit: Timestamp.now(),
+                myUid: '',
+                profileIsAccurate: true,
+                totalVisits: 0,
+                visitsThisYear: 0,
+              )
+            ]),
+        StreamProvider<List<ComplimentObject>>(
+            create: (BuildContext context) => _db.getUserCompliments(),
+            initialData: [
+              ComplimentObject(
+                  compliment: '',
+                  author: '',
+                  profilePicture: '',
+                  docId: '',
+                  authorUid: '',
+                  toUid: '',
+                  date: Timestamp.now())
+            ]),
         StreamProvider<List<AllFriendsObject>>(
             create: (BuildContext context) => _db.getFriendsList(),
             initialData: [
               AllFriendsObject(
-                activeFriends: [],
+                daysTillExp: 0,
+                totalVisits: 0,
+                visitsThisYear: 0,
+                allBusinesses: [],
+                allPlaces: [],
                 gender: '',
-                uid: '',
                 allFriends: [],
+                uid: '',
                 firstName: '',
                 lastName: '',
                 bio: '',
+                profileAccuracyRating: 0,
+                safetyRating: 0,
+                reviewCount: 0,
                 firstLanguage: '',
                 interestedIn: '',
                 relationshipStatus: '',
@@ -100,6 +134,12 @@ class Discovret extends StatelessWidget {
                 profilePicture: '',
                 sex: '',
                 userPictures: [],
+                languages: [],
+                countriesLivedIn: [],
+                mentoringIn: [],
+                hobbiesInterest: [],
+                culturalHeritage: [],
+                religion: [],
               )
             ]),
         StreamProvider<List<ConfirmationsObject>>(
@@ -128,13 +168,17 @@ class Discovret extends StatelessWidget {
         StreamProvider(
           create: (BuildContext context) => _db.getUserProfileInfo(),
           initialData: DbUserProfileInfo(
-            activeFriends: [],
+            allBusinesses: [],
+            allPlaces: [],
             gender: '',
             allFriends: [],
             uid: '',
             firstName: '',
             lastName: '',
             bio: '',
+            profileAccuracyRating: 100,
+            safetyRating: 100,
+            reviewCount: 0,
             firstLanguage: '',
             interestedIn: '',
             relationshipStatus: '',
@@ -142,11 +186,6 @@ class Discovret extends StatelessWidget {
             profilePicture: '',
             sex: '',
             userPictures: [],
-          ),
-        ),
-        StreamProvider<DbUserProfileSearchInfo>(
-          create: (BuildContext context) => _db.getUserProfileSearcInfo(),
-          initialData: DbUserProfileSearchInfo(
             languages: [],
             countriesLivedIn: [],
             mentoringIn: [],
@@ -155,6 +194,17 @@ class Discovret extends StatelessWidget {
             religion: [],
           ),
         ),
+        // StreamProvider<DbUserProfileSearchInfo>(
+        //   create: (BuildContext context) => _db.getUserProfileSearcInfo(),
+        //   initialData: DbUserProfileSearchInfo(
+        //     languages: [],
+        //     countriesLivedIn: [],
+        //     mentoringIn: [],
+        //     hobbiesInterest: [],
+        //     culturalHeritage: [],
+        //     religion: [],
+        //   ),
+        // ),
         ChangeNotifierProvider(create: (_) => UserAccountInfo()),
         ChangeNotifierProvider(create: (_) => UserProfileInfo()),
         ChangeNotifierProvider(create: (_) => UserProfileSettings())
@@ -162,6 +212,7 @@ class Discovret extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           primaryColorLight: kDiscovretYellow,
+
           // inputDecorationTheme: InputDecorationTheme()
         ),
         debugShowCheckedModeBanner: false,

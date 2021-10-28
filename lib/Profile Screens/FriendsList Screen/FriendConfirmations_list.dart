@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:discovret1_0/Components/background_screen.dart';
@@ -17,6 +19,7 @@ import 'package:flutter_circular_text/circular_text/model.dart';
 import 'package:flutter_circular_text/circular_text/widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'friend_list_brain.dart';
 
@@ -32,13 +35,19 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
   AuthService _auth = AuthService();
   FirestoreService _dbServices = FirestoreService();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  var uuid = Uuid();
+  String? usersCompliment;
+  var profileAccuracyValue;
+  var safetyRatingValue;
 
   @override
   Widget build(BuildContext context) {
-    // final UserProfileInfo userProfileInfo =
-    //     Provider.of<UserProfileInfo>(context);
+    final UserProfileInfo userProfileInfo =
+        Provider.of<UserProfileInfo>(context);
     final _dbUserConfirmations =
         Provider.of<List<ConfirmationsObject>>(context);
+    final DbUserProfileInfo dbUserProfileInfo =
+        Provider.of<DbUserProfileInfo>(context);
     // FriendProfile selectedObject =
     //     userProfileInfo.selectedConfirmationObject;
 
@@ -65,14 +74,18 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
             name: friend.name1!,
             uids: friend.uids!,
             profilePicture: friend.profilePicture1!,
-            uid: friend.uid1!));
+            friendUid: friend.uid1!,
+            uid1: friend.uid1!,
+            uid2: friend.uid2!));
       } else {
         userConfirmations.add(NewConfirmationObject(
             docId: friend.docId!,
             name: friend.name2!,
             uids: friend.uids!,
             profilePicture: friend.profilePicture2!,
-            uid: friend.uid2!));
+            friendUid: friend.uid2!,
+            uid1: friend.uid1!,
+            uid2: friend.uid2!));
       }
     }
 
@@ -137,12 +150,25 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
               itemCount: userConfirmations.length,
               itemBuilder: (context, index) {
                 final confirmationObjectReview = userConfirmations[index];
+                GlobalKey<FormState> key = GlobalKey<FormState>();
                 return Form(
                   key: _numberFormReview,
                   autovalidateMode: AutovalidateMode.disabled,
                   child: FriendConfirmationCard(
+                    globalFormState: key,
+                    profileAccuracyValue: profileAccuracyValue,
+                    safetyRatingValue: safetyRatingValue,
                     fullName: confirmationObjectReview.name,
                     picture: confirmationObjectReview.profilePicture,
+                    onChangedProfileA: (value) {
+                      profileAccuracyValue = value;
+                    },
+                    onChangedSafety: (value) {
+                      safetyRatingValue = value;
+                    },
+                    onChangedCompliment: (value) {
+                      usersCompliment = value;
+                    },
                     child: Text(
                       "Confirmations: ${index + 1}/${userConfirmations.length}"
                           .toUpperCase(),
@@ -158,16 +184,49 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
                     onTapConfirm: () {
                       checkProfileFormReview();
                       if (isValidFormReview == true) {
+                        if (usersCompliment != '') {
+                          String docId = uuid.v1();
+                          _db
+                              .collection(
+                                  'UserProfileInfo/${confirmationObjectReview.friendUid}/Compliments')
+                              .doc(docId)
+                              .set({
+                            'Compliment': usersCompliment,
+                            'Author':
+                                '${dbUserProfileInfo.firstName} ${dbUserProfileInfo.lastName}',
+                            'DocId': docId,
+                            'Uid': confirmationObjectReview.friendUid,
+                            'AuthorUid': dbUserProfileInfo.uid,
+                            'ProfilePicture': dbUserProfileInfo.profilePicture,
+                            'Date': FieldValue.serverTimestamp()
+                          });
+                        }
                         _dbServices.updateConfirmationList(
                             fieldArray: 'Uids',
-                            field: (confirmationObjectReview.uids.first ==
+                            field: (confirmationObjectReview.uid1 ==
                                     _auth.getUser!.uid)
                                 ? 'ConfirmedRequest1'
                                 : 'ConfirmedRequest2',
                             docId: confirmationObjectReview.docId,
                             valueArray: _auth.getUser!.uid,
                             value: true);
-                        _db.collection('Compliments').add({});
+                        _db
+                            .collection(
+                                'UserProfileInfo/${_auth.getUser!.uid}/AllFriends')
+                            .doc(confirmationObjectReview.friendUid)
+                            .set({
+                          'ProfileIsAccurate':
+                              (profileAccuracyValue == 'Yes') ? true : false,
+                          'IsSafe': (safetyRatingValue == 'Yes') ? true : false,
+                          'MyUid': _auth.getUser!.uid,
+                          "VisitsThisYear": 1,
+                          "LastVisit": FieldValue.serverTimestamp(),
+                          "FirstVisit": FieldValue.serverTimestamp(),
+                          "FriendUid": confirmationObjectReview.friendUid,
+                          "FriendProfilePicture":
+                              confirmationObjectReview.profilePicture,
+                          "FriendName": confirmationObjectReview.name
+                        }, SetOptions(merge: true));
                       } else {}
                     },
                   ),
@@ -184,7 +243,9 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
 class NewConfirmationObject {
   final String name;
   final String profilePicture;
-  final String uid;
+  final String friendUid;
+  final String uid1;
+  final String uid2;
   final String docId;
   final List<dynamic> uids;
 
@@ -192,7 +253,9 @@ class NewConfirmationObject {
       {required this.name,
       required this.uids,
       required this.profilePicture,
-      required this.uid,
+      required this.friendUid,
+      required this.uid1,
+      required this.uid2,
       required this.docId});
 }
 

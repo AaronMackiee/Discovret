@@ -11,15 +11,15 @@ class FriendProfile {
       this.friendReview});
 }
 
-class ActiveFriendsObject {
-  final String? friendProfilePicture;
-  final String? friendProfileName;
-  final String? friendCompliment;
-  final bool? friendReview;
+// class ActiveFriendsObject {
+//   final String? friendProfilePicture;
+//   final String? friendProfileName;
+//   final String? friendCompliment;
+//   final bool? friendReview;
 
-  ActiveFriendsObject(
-      {this.friendProfilePicture,
-      this.friendProfileName,
-      this.friendCompliment,
-      this.friendReview});
-}
+//   ActiveFriendsObject(
+//       {this.friendProfilePicture,
+//       this.friendProfileName,
+//       this.friendCompliment,
+//       this.friendReview});
+// }

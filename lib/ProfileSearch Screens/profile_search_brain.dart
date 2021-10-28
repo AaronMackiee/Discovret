@@ -1,6 +1,6 @@
-class SearchObject {
+class SearchObject1 {
   final String? itemHeader;
   final String? item;
 
-  SearchObject({this.itemHeader, this.item});
+  SearchObject1({this.itemHeader, this.item});
 }

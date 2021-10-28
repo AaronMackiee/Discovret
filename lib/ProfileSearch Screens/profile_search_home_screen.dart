@@ -341,7 +341,6 @@ class _ProfileSearchState extends State<ProfileSearch>
               unNullWidget: ListView.builder(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  // itemCount: userProfileInfo.searchListCount,
                   itemCount: dbUserSearchList.searchObject!.length,
                   itemExtent: 75.0,
                   itemBuilder: (context, index) {

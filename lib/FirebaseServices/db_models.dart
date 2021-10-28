@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 // class UserDiscSearchList {
@@ -15,6 +16,75 @@ import 'package:flutter/foundation.dart';
 //     );
 //   }
 // }
+class FriendListObject {
+  Timestamp firstVisit;
+  String friendUid;
+  bool isSafe;
+  Timestamp lastVisit;
+  String myUid;
+  bool profileIsAccurate;
+  int totalVisits;
+  int visitsThisYear;
+  int daysTillExp;
+
+  FriendListObject(
+      {required this.firstVisit,
+      required this.friendUid,
+      required this.isSafe,
+      required this.lastVisit,
+      required this.myUid,
+      required this.profileIsAccurate,
+      required this.totalVisits,
+      required this.visitsThisYear,
+      required this.daysTillExp});
+
+  factory FriendListObject.fromMap({required data}) {
+    return FriendListObject(
+      daysTillExp: data['DaysTillExp'] ?? 0,
+      firstVisit: data['FirstVisit'],
+      friendUid: data['FriendUid'] ?? "",
+      isSafe: data['IsSafe'] ?? true,
+      lastVisit: data['LastVisit'],
+      myUid: data['MyUid'] ?? "",
+      profileIsAccurate: data['ProfileIsAccurate'] ?? true,
+      totalVisits: data['TotalVisits'] ?? 0,
+      visitsThisYear: data['VisitsThisYear'] ?? 0,
+    );
+  }
+}
+
+class ComplimentObject {
+  String compliment;
+  String author;
+  String profilePicture;
+  String? toUid;
+  String? authorUid;
+  String docId;
+  Timestamp date;
+
+  ComplimentObject({
+    required this.compliment,
+    required this.author,
+    required this.profilePicture,
+    required this.date,
+    required this.docId,
+    this.authorUid,
+    this.toUid,
+  });
+
+  factory ComplimentObject.fromMap({required data}) {
+    return ComplimentObject(
+      compliment: data['Compliment'] ?? "",
+      author: data['Author'] ?? "",
+      profilePicture: data['ProfilePicture'] ?? "",
+      date: data['Date'],
+      docId: data['DocId'] ?? "",
+      authorUid: data['AuthorUid'] ?? "",
+      toUid: data['Uid'] ?? " ",
+    );
+  }
+}
+
 class AddFriendObject {
   String? docId;
   List<dynamic>? allFriends;
@@ -33,9 +103,8 @@ class AddFriendObject {
   List<dynamic>? userPictures;
 
   AddFriendObject(
-      {
-        this.docId,
-        this.activeFriends,
+      {this.docId,
+      this.activeFriends,
       this.allFriends,
       this.uid,
       this.firstName,
@@ -82,8 +151,7 @@ class ConfirmationsObject {
   bool? confirmedRequest2;
 
   ConfirmationsObject(
-      {
-      required this.docId,  
+      {required this.docId,
       required this.uids,
       required this.uid1,
       required this.uid2,
@@ -109,52 +177,93 @@ class ConfirmationsObject {
 }
 
 class AllFriendsObject {
-  List<dynamic>? allFriends;
-  List<dynamic>? activeFriends;
-  String? uid;
-  String? firstName;
-  String? lastName;
-  String? sex;
-  String? firstLanguage;
-  String? interestedIn;
-  String? relationshipStatus;
+  List<dynamic> allFriends;
+  List<dynamic> allBusinesses;
+  List<dynamic> allPlaces;
+  String firstName;
+  String uid;
+  String lastName;
+  String sex;
   String? gender;
-  int? age;
+  String firstLanguage;
+  String interestedIn;
+  String relationshipStatus;
+  int age;
   String? bio;
-  String? profilePicture;
-  List<dynamic>? userPictures;
+  int profileAccuracyRating;
+  int reviewCount;
+  int safetyRating;
+  int totalVisits;
+  int visitsThisYear;
+  int daysTillExp;
+  String profilePicture;
+  List<dynamic> userPictures;
+  List<dynamic>? languages;
+  List<dynamic>? countriesLivedIn;
+  List<dynamic>? culturalHeritage;
+  List<dynamic>? religion;
+  List<dynamic>? hobbiesInterest;
+  List<dynamic>? mentoringIn;
 
   AllFriendsObject(
-      {required this.activeFriends,
+      {required this.totalVisits,
+      required this.daysTillExp,
+      required this.visitsThisYear,
       required this.allFriends,
+      required this.allBusinesses,
+      required this.allPlaces,
       required this.uid,
       required this.firstName,
       required this.lastName,
       required this.sex,
+      this.gender,
       required this.firstLanguage,
       required this.interestedIn,
       required this.relationshipStatus,
       required this.age,
-      this.gender,
       this.bio,
+      required this.profileAccuracyRating,
+      required this.safetyRating,
+      required this.reviewCount,
       required this.userPictures,
-      required this.profilePicture});
+      required this.profilePicture,
+      this.languages,
+      this.countriesLivedIn,
+      this.culturalHeritage,
+      this.religion,
+      this.hobbiesInterest,
+      this.mentoringIn});
 
-  AllFriendsObject.fromMap({required Map data}) {
-    uid = data['Uid'] ?? "";
-    firstName = data['FirstName'] ?? "";
-    lastName = data['LastName'] ?? "";
-    sex = data['Gender'] ?? "";
-    gender = data['BiologicalSex'] ?? "";
-    firstLanguage = data['FirstLanguage'] ?? "";
-    interestedIn = data['InterestedIn'] ?? "";
-    relationshipStatus = data['RelationshipStatus'] ?? "";
-    age = data['Age'] ?? 0;
-    bio = data['Bio'] ?? "";
-    userPictures = (data['UserPictures'] as List? ?? []).toList();
-    allFriends = (data['AllFriends'] as List? ?? []).toList();
-    activeFriends = (data['ActiveFriends'] as List? ?? []).toList();
-    profilePicture = data['ProfilePicture'] ?? "";
+  factory AllFriendsObject.fromMap({required data}) {
+    return AllFriendsObject(
+      daysTillExp: data['DaysTillExp'] ?? 0,
+      totalVisits: data['Total Visits'] ?? 0,
+      visitsThisYear: data['VisitsThisYear'] ?? 0,
+      uid: data['Uid'] ?? "",
+      firstName: data['FirstName'] ?? "",
+      lastName: data['LastName'] ?? "",
+      sex: data['BiologicalSex'] ?? "",
+      gender: data['Gender'] ?? "",
+      firstLanguage: data['FirstLanguage'] ?? " ",
+      interestedIn: data['InterestedIn'] ?? "",
+      relationshipStatus: data['RelationshipStatus'] ?? "",
+      age: data['Age'] ?? 0,
+      bio: data['Bio'] ?? "",
+      profileAccuracyRating: data['ProfileAccuracyRating'] ?? 0,
+      safetyRating: data['SafetyRating'] ?? 0,
+      reviewCount: data['ReviewCount'] ?? 0,
+      userPictures: (data['UserPictures'] as List? ?? []).toList(),
+      allFriends: (data['AllFriends'] as List? ?? []).toList(),
+      allBusinesses: (data['AllBusinesses'] as List? ?? []).toList(),
+      allPlaces: (data['AllPlaces'] as List? ?? []).toList(),
+      profilePicture: data['ProfilePicture'] ?? "",
+      languages: (data['Languages'] as List? ?? []).toList(),
+      countriesLivedIn: (data['CountriesLivedIn'] as List? ?? []).toList(),
+      culturalHeritage: (data['CulturalHeritage'] as List? ?? []).toList(),
+      religion: (data['Religion'] as List? ?? []).toList(),
+      hobbiesInterest: (data['HobbiesInterest'] as List? ?? []).toList(),
+      mentoringIn: (data['MentoringIn'] as List? ?? []).toList(),
+    );
   }
 }
 
@@ -199,9 +308,10 @@ class DbUserDiscSearchList {
 
 class DbUserProfileInfo {
   List<dynamic>? allFriends;
-  List<dynamic>? activeFriends;
-  String? uid;
+  List<dynamic>? allBusinesses;
+  List<dynamic>? allPlaces;
   String? firstName;
+  String? uid;
   String? lastName;
   String? sex;
   String? gender;
@@ -210,12 +320,22 @@ class DbUserProfileInfo {
   String? relationshipStatus;
   int? age;
   String? bio;
+  dynamic profileAccuracyRating;
+  dynamic reviewCount;
+  dynamic safetyRating;
   String? profilePicture;
   List<dynamic>? userPictures;
+  List<dynamic>? languages;
+  List<dynamic>? countriesLivedIn;
+  List<dynamic>? culturalHeritage;
+  List<dynamic>? religion;
+  List<dynamic>? hobbiesInterest;
+  List<dynamic>? mentoringIn;
 
   DbUserProfileInfo(
-      {this.activeFriends,
-      this.allFriends,
+      {this.allFriends,
+      this.allBusinesses,
+      this.allPlaces,
       this.uid,
       this.firstName,
       this.lastName,
@@ -226,10 +346,19 @@ class DbUserProfileInfo {
       this.relationshipStatus,
       this.age,
       this.bio,
+      this.profileAccuracyRating,
+      this.safetyRating,
+      this.reviewCount,
       this.userPictures,
-      this.profilePicture});
+      this.profilePicture,
+      this.languages,
+      this.countriesLivedIn,
+      this.culturalHeritage,
+      this.religion,
+      this.hobbiesInterest,
+      this.mentoringIn});
 
-  factory DbUserProfileInfo.fromMap({required Map<String, dynamic> data}) {
+  factory DbUserProfileInfo.fromMap({required data}) {
     return DbUserProfileInfo(
       uid: data['Uid'] ?? "",
       firstName: data['FirstName'] ?? "",
@@ -241,32 +370,14 @@ class DbUserProfileInfo {
       relationshipStatus: data['RelationshipStatus'] ?? "",
       age: data['Age'] ?? 0,
       bio: data['Bio'] ?? "",
+      profileAccuracyRating: data['ProfileAccuracyRating'] ?? 100,
+      safetyRating: data['SafetyRating'] ?? 100,
+      reviewCount: data['ReviewCount'] ?? 0,
       userPictures: (data['UserPictures'] as List? ?? []).toList(),
       allFriends: (data['AllFriends'] as List? ?? []).toList(),
-      activeFriends: (data['ActiveFriends'] as List? ?? []).toList(),
+      allBusinesses: (data['AllBusinesses'] as List? ?? []).toList(),
+      allPlaces: (data['AllPlaces'] as List? ?? []).toList(),
       profilePicture: data['ProfilePicture'] ?? "",
-    );
-  }
-}
-
-class DbUserProfileSearchInfo {
-  List<dynamic>? languages;
-  List<dynamic>? countriesLivedIn;
-  List<dynamic>? culturalHeritage;
-  List<dynamic>? religion;
-  List<dynamic>? hobbiesInterest;
-  List<dynamic>? mentoringIn;
-
-  DbUserProfileSearchInfo(
-      {this.languages,
-      this.countriesLivedIn,
-      this.culturalHeritage,
-      this.religion,
-      this.hobbiesInterest,
-      this.mentoringIn});
-  factory DbUserProfileSearchInfo.fromMap(
-      {required Map<String, dynamic> data}) {
-    return DbUserProfileSearchInfo(
       languages: (data['Languages'] as List? ?? []).toList(),
       countriesLivedIn: (data['CountriesLivedIn'] as List? ?? []).toList(),
       culturalHeritage: (data['CulturalHeritage'] as List? ?? []).toList(),
@@ -277,16 +388,45 @@ class DbUserProfileSearchInfo {
   }
 }
 
-class FsUserPhotos {
-  String? profilePhoto;
+// class DbUserProfileSearchInfo {
+//   List<dynamic>? languages;
+//   List<dynamic>? countriesLivedIn;
+//   List<dynamic>? culturalHeritage;
+//   List<dynamic>? religion;
+//   List<dynamic>? hobbiesInterest;
+//   List<dynamic>? mentoringIn;
 
-  FsUserPhotos({this.profilePhoto});
-  factory FsUserPhotos.fromMap({required Map<String, dynamic> data}) {
-    return FsUserPhotos(
-      profilePhoto: data['UserPhotos'] ?? "",
-    );
-  }
-}
+//   DbUserProfileSearchInfo(
+//       {
+//       this.languages,
+//       this.countriesLivedIn,
+//       this.culturalHeritage,
+//       this.religion,
+//       this.hobbiesInterest,
+//       this.mentoringIn});
+//   factory DbUserProfileSearchInfo.fromMap(
+//       {required Map<String, dynamic> data}) {
+//     return DbUserProfileSearchInfo(
+//       languages: (data['Languages'] as List? ?? []).toList(),
+//       countriesLivedIn: (data['CountriesLivedIn'] as List? ?? []).toList(),
+//       culturalHeritage: (data['CulturalHeritage'] as List? ?? []).toList(),
+//       religion: (data['Religion'] as List? ?? []).toList(),
+//       hobbiesInterest: (data['HobbiesInterest'] as List? ?? []).toList(),
+//       mentoringIn: (data['MentoringIn'] as List? ?? []).toList(),
+//     );
+//   }
+// }
+
+// class FsUserPhotos {
+//   String? profilePhoto;
+
+//   FsUserPhotos({this.profilePhoto});
+//   factory FsUserPhotos.fromMap({required Map<String, dynamic> data}) {
+//     return FsUserPhotos(
+//       profilePhoto: data['UserPhotos'] ?? "",
+//     );
+//   }
+// }
 
 // FriendObject(
 //       {this.bio,

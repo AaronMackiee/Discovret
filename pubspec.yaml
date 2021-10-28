@@ -53,6 +53,8 @@ dependencies:
   firebase_storage: ^10.0.2
   fluttericon: ^2.0.0
   qr_flutter: ^4.0.0
+  cloud_functions: ^3.0.3
+  uuid: ^3.0.5
 
 dev_dependencies:
   flutter_test:

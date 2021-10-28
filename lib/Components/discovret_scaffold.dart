@@ -59,7 +59,7 @@ class DiscovretScaffold extends StatelessWidget {
         floatingActionButtonLocation: floatingActionButtonLocation,
         floatingActionButton: floatingActionButton,
         bottomNavigationBar: SizedBox(
-          height: deviceHeight * .10,
+          height: 66,
           child: BottomNavigationBar(
             elevation: 60,
             currentIndex: index,
@@ -68,7 +68,7 @@ class DiscovretScaffold extends StatelessWidget {
             // unselectedItemColor: kinactiveIconColor,
             showSelectedLabels: false,
             showUnselectedLabels: false,
-            // selectedIconTheme: IconThemeData(size: kactiveIcon),
+            // selectedIconTheme: IconThemeData(size: 30),
             items: [
               BottomNavigationBarItem(
                   icon:
@@ -118,6 +118,7 @@ class DiscovretScaffold extends StatelessWidget {
           ),
         ),
         appBar: AppBar(
+          toolbarHeight: 50,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_sharp,

@@ -10,6 +10,7 @@ import 'package:discovret1_0/LogIn Screens/login_screen.dart';
 import 'package:discovret1_0/Map Screens/map_home_screen.dart';
 import 'package:discovret1_0/Provider Services/profile_info_provider.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/friend_object.dart';
+import 'package:discovret1_0/Provider%20Services/provider_models.dart';
 import 'package:discovret1_0/QR%20Scanner Screens/qr_code_home_screen.dart';
 import 'package:discovret1_0/Settings Screens/settings_home_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class QrScannerScreen extends StatefulWidget {
 }
 
 class _QrScannerScreenState extends State<QrScannerScreen> {
-  FriendObject newFriend = FriendObject();
+  
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -184,8 +185,6 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
                           'ProfilePicture2': friend.profilePicture,
                           'ConfirmedRequest1': false,
                           'ConfirmedRequest2': false,
-                          'RejectedRequest1': false,
-                          'RejectedRequest2': false,
                           'DocId': '${_auth.getUser!.uid}$uid',
                         }, SetOptions(merge: true));
                         dispose();

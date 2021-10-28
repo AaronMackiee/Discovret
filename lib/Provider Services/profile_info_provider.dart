@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:discovret1_0/FirebaseServices/db_models.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/friend_list_brain.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/friend_object.dart';
 import 'package:discovret1_0/ProfileSearch Screens/profile_search_brain.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:discovret1_0/Provider Services/provider_models.dart';
 
 class UserProfileInfo with ChangeNotifier {
   String? _firstName;
@@ -34,38 +36,42 @@ class UserProfileInfo with ChangeNotifier {
   List<String> _listIdeasBeliefs = [];
   List<int> _listSelectedMentoringIn = [];
   List<String> _listMentoringIn = [];
-  List<SearchObject> _listDiscSearch = [];
+  List<SearchObject1> _listDiscSearch = [];
   FriendProfile? _selectedConfirmationObject;
-  List<FriendObject?> _listConfirmationObjects = [];
-  List<FriendObject?> _listActiveFriends = [];
+  List<String?> _listAllFriends = [];
+  List<AllFriendsObject?> _listActiveFriends = [];
+  List<AllFriendsObject?> _listInActiveFriends = [];
+  List<AllFriendsObject?> _listCloseFriends = [];
   Color yesButtonColor = Colors.transparent;
   Color noButonColor = Colors.transparent;
   String? confirmFriendErrorText;
-  List<dynamic> _listUserPhotos = [
-  ];
+  List<dynamic> _listUserPhotos = [];
   String? _profilePhoto;
   var _logInPhoto;
+  String? _profileAccuracyReviews;
+  String? _safetyRatingReviews;
+
   dynamic get logInPhoto => this._logInPhoto;
   set logInPhoto(var value) {
     this._logInPhoto = value;
     notifyListeners();
   }
-    // 'assets/profile1.jpg',
-    // 'assets/profile2.jpg',
-    // 'assets/profile3.jpg',
-    // 'assets/profile4.jpg',
-    // 'assets/profile5.jpg',
-    // 'assets/profile6.jpg',
-    // 'assets/profile7.jpg',
-    // 'assets/profile8.jpg',
-    // 'assets/profile9.jpg',
-    // 'assets/profile10.jpg',
-    // 'assets/profile11.jpg',
-    // 'assets/profile12.jpg',
-    // 'assets/profile13.jpg',
-    // 'assets/profile14.jpg',
-    // 'assets/profile15.jpg',
-    
+  // 'assets/profile1.jpg',
+  // 'assets/profile2.jpg',
+  // 'assets/profile3.jpg',
+  // 'assets/profile4.jpg',
+  // 'assets/profile5.jpg',
+  // 'assets/profile6.jpg',
+  // 'assets/profile7.jpg',
+  // 'assets/profile8.jpg',
+  // 'assets/profile9.jpg',
+  // 'assets/profile10.jpg',
+  // 'assets/profile11.jpg',
+  // 'assets/profile12.jpg',
+  // 'assets/profile13.jpg',
+  // 'assets/profile14.jpg',
+  // 'assets/profile15.jpg',
+
   // bool isValidFormProfile = false;
   // var _numberFormProfile = GlobalKey<FormState>();
 
@@ -80,6 +86,35 @@ class UserProfileInfo with ChangeNotifier {
   //   this.isValidFormProfile = isValidFormProfile;
   //   notifyListeners();
   // }
+  List<AllFriendsObject?> get listActiveFriends => this._listActiveFriends;
+  set listActiveFriends(List<AllFriendsObject?> value) {
+    this._listActiveFriends = value;
+    notifyListeners();
+  }
+
+  List<AllFriendsObject?> get listInActiveFriends => this._listInActiveFriends;
+  set listInActiveFriends(value) {
+    this._listInActiveFriends = value;
+    notifyListeners();
+  }
+
+  List<AllFriendsObject?> get listCloseFriends => this._listCloseFriends;
+  set listCloseFriends(value) {
+    this._listCloseFriends = value;
+    notifyListeners();
+  }
+
+  get profileAccuracyReviews => this._profileAccuracyReviews;
+  set profileAccuracyReviews(value) {
+    this._profileAccuracyReviews = value;
+    notifyListeners();
+  }
+
+  get safetyRatingReviews => this._safetyRatingReviews;
+  set safetyRatingReviews(value) {
+    this._safetyRatingReviews = value;
+    notifyListeners();
+  }
 
   List<String> get selectedReligions => this._listSelectedReligions;
   set selectedReligions(List<String> value) {
@@ -87,16 +122,9 @@ class UserProfileInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  List<FriendObject?> get listConfirmationObjects =>
-      this._listConfirmationObjects;
-  set listConfirmationObjects(List<FriendObject?> value) {
-    this._listConfirmationObjects = value;
-    notifyListeners();
-  }
-
-  List<FriendObject?> get listActiveFriends => this._listActiveFriends;
-  set listActiveFriends(List<FriendObject?> value) {
-    this._listActiveFriends = value;
+  List<String?> get listAllFriends => this._listAllFriends;
+  set listAllFriends(List<String?> value) {
+    this._listAllFriends = value;
     notifyListeners();
   }
 
@@ -143,15 +171,7 @@ class UserProfileInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  // UnmodifiableListView<FriendObject> get listConfirmationObjects {
-  //   return UnmodifiableListView(_listConfirmationObjects);
-  // }
-
-  // UnmodifiableListView<FriendObject> get listActiveFriends {
-  //   return UnmodifiableListView(_listActiveFriends);
-  // }
-
-  UnmodifiableListView<SearchObject> get listDiscSearch {
+  UnmodifiableListView<SearchObject1> get listDiscSearch {
     return UnmodifiableListView(_listDiscSearch);
   }
 
@@ -315,59 +335,67 @@ class UserProfileInfo with ChangeNotifier {
     }
   }
 
-  int get searchListCount {
-    return _listDiscSearch.length;
-  }
+  // int get searchListCount {
+  //   return _listDiscSearch.length;
+  // }
 
   int get friendConfirmationsCount {
-    return _listConfirmationObjects.length;
+    return _listAllFriends.length;
   }
 
   int get activeFriendsCount {
     return _listActiveFriends.length;
   }
 
+  int get inActiveFriendsCount {
+    return _listInActiveFriends.length;
+  }
+
+  int get closeFriendsCount {
+    return _listCloseFriends.length;
+  }
+
   int get userPhotosCount {
     return _listUserPhotos.length;
   }
 
-  String getErrorText(FriendObject object) {
-    if (object.onErrorText == null) {
-      return "";
-    } else {
-      return object.onErrorText;
-    }
-  }
+  // String getErrorText(FriendObject object) {
+  //   if (object.onErrorText == null) {
+  //     return "";
+  //   } else {
+  //     return object.onErrorText;
+  //   }
+  // }
 
-  void addSearchitem({String? selectedValue, String? textHeader}) {
-    final searchItem =
-        SearchObject(itemHeader: textHeader, item: selectedValue);
-    _listDiscSearch.add(searchItem);
-    notifyListeners();
-  }
+  // void addSearchitem({String? selectedValue, String? textHeader}) {
+  //   final searchItem =
+  //       SearchObject(itemHeader: textHeader, item: selectedValue);
+  //   _listDiscSearch.add(searchItem);
+  //   notifyListeners();
+  // }
 
-  void deleteSearchItem(SearchObject item) {
-    _listDiscSearch.remove(item);
-    notifyListeners();
-  }
+  // void deleteSearchItem(SearchObject item) {
+  //   _listDiscSearch.remove(item);
+  //   notifyListeners();
+  // }
 
-  void addConfirmationObject({FriendObject? object}) {
-    _listActiveFriends.add(object);
-    _listConfirmationObjects.remove(object);
-    notifyListeners();
-  }
+  // void addFriend({String? object}) {
+  //   _listAllFriends.remove(object);
+  //   notifyListeners();
+  // }
 
-  void addFriendObject({FriendObject? object}) {
-    _listConfirmationObjects.add(object);
+  void addFriend(
+      {required String? object, required List<String?>? friendType}) {
+    friendType!.add(object);
     notifyListeners();
   }
 
   void deleteConfirmationObject(FriendObject object) {
-    _listConfirmationObjects.remove(object);
+    _listAllFriends.remove(object);
     notifyListeners();
   }
 
-  void deleteFriend({FriendObject? object, required List<FriendObject?> list}) {
+  void deleteFriend({required List<AllFriendsObject> object, required List<AllFriendsObject> list}) {
     list.remove(object);
     notifyListeners();
   }

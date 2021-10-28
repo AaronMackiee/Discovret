@@ -198,9 +198,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           Hero(
                             tag: 'Compliments',
                             child: Icon(
-                              Icons.thumb_up_outlined,
+                              Icons.thumb_up_off_alt_outlined,
                               size: 30,
-                              color: kDiscovretGreen,
+                              color: kDiscovretYellow,
                             ),
                           ),
                           Padding(
@@ -401,6 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           onpress: () {
                             setState(() {
                               Navigator.pushNamed(context, FriendsList.id);
+                              
                             });
                           },
                           cardBody: Column(
@@ -424,7 +425,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     color: Colors.black),
                               ),
                               Text(
-                                '237',
+                                '${dbUserProfileInfo.allFriends!.length}',
                                 // textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 15,
@@ -457,7 +458,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     color: Colors.black),
                               ),
                               Text(
-                                '45',
+                                '${dbUserProfileInfo.allPlaces!.length}',
                                 // textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 15,
@@ -500,7 +501,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                 ),
                                 Text(
-                                  '30',
+                                  '${dbUserProfileInfo.allBusinesses!.length}',
                                   // textAlign: TextAlign.left,
                                   style: TextStyle(
                                       fontSize: 15,

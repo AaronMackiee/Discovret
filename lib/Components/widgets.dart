@@ -1070,19 +1070,19 @@ class InfoOutputCard extends StatelessWidget {
 }
 
 class FriendTypeCard extends StatelessWidget {
-  final String? assetImage;
+  final ImageProvider<Object>? assetImage;
   final Function? onpress;
-  final String? headerText;
-  final String? discCoinDesc;
-  final int? friendCount;
+  final String headerText;
+  final String discCoinDesc;
+  final int friendCount;
 
   const FriendTypeCard(
       {Key? key,
-      this.assetImage,
+      required this.assetImage,
       this.onpress,
-      this.discCoinDesc,
-      this.friendCount,
-      this.headerText});
+      required this.discCoinDesc,
+      required this.friendCount,
+      required this.headerText});
 
   @override
   Widget build(BuildContext context) {
@@ -1104,7 +1104,7 @@ class FriendTypeCard extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
                       radius: 45,
-                      backgroundImage: AssetImage(assetImage!),
+                      backgroundImage: assetImage,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -1139,7 +1139,7 @@ class FriendTypeCard extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(discCoinDesc!),
+                      child: Text(discCoinDesc),
                     ),
                   ],
                 ),
@@ -1251,7 +1251,7 @@ class AllFriendsListCard extends StatelessWidget {
             text: '$firstName $lastName',
             fontSize: kTextSize16,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           tileColor: kclearContainer,
           leading: GestureDetector(
             onTap: onPressedProfile as void Function()?,
@@ -1283,12 +1283,24 @@ class AllFriendsListCard extends StatelessWidget {
   }
 }
 
-class CloseFriendListCard extends StatefulWidget {
-  @override
-  _CloseFriendListCardState createState() => _CloseFriendListCardState();
-}
+class CloseFriendListCard extends StatelessWidget {
+  final String firstName;
+  final String lastName;
+  final String profilePicture;
+  final Function? onPressedProfile;
+  final Function? onPressedDelete;
+  final int? daysTillExp;
+  final int? visitsThisYear;
 
-class _CloseFriendListCardState extends State<CloseFriendListCard> {
+  CloseFriendListCard(
+      {required this.firstName,
+      required this.lastName,
+      required this.profilePicture,
+      this.onPressedProfile,
+      this.onPressedDelete,
+      required this.daysTillExp,
+      required this.visitsThisYear});
+
   void setAlert(context) {
     Alert(
       context: context,
@@ -1305,7 +1317,7 @@ class _CloseFriendListCardState extends State<CloseFriendListCard> {
             "Yes",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: onPressedDelete as void Function()?,
           width: 120,
         ),
         DialogButton(
@@ -1325,32 +1337,32 @@ class _CloseFriendListCardState extends State<CloseFriendListCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           color: kclearContainer,
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
         child: ListTile(
           title: SubjectIconText(
-            text: 'Aaron Mackie',
+            text: '$firstName $lastName',
             fontSize: kTextSize16,
           ),
           subtitle: Text(
-            'Days Till Inactive: 320\nVisits This Year: 7',
+            'Days Till Inactive: $daysTillExp\nVisits This Year: $visitsThisYear',
+            style: TextStyle(
+                // color: kDiscovretGreen,
+                ),
             maxLines: 3,
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           tileColor: kclearContainer,
-          leading: Container(
-            height: 60,
-            width: 60,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  Navigator.pushNamed(context, ViewProfileFriend.id);
-                });
-              },
+          leading: GestureDetector(
+            onTap: onPressedProfile as void Function()?,
+            child: Container(
+              height: 60,
+              width: 60,
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/Profile.jpg'),
+                backgroundImage: NetworkImage(profilePicture),
               ),
             ),
           ),
@@ -1365,9 +1377,7 @@ class _CloseFriendListCardState extends State<CloseFriendListCard> {
                   color: Colors.red,
                 ),
                 onPressed: () {
-                  setState(() {
-                    setAlert(context);
-                  });
+                  setAlert(context);
                 }),
           ),
         ),
@@ -1377,22 +1387,22 @@ class _CloseFriendListCardState extends State<CloseFriendListCard> {
 }
 
 class ActiveFriendsListCard extends StatelessWidget {
-  final String? firstName;
-  final String? lastName;
-  final String? profilePicture;
+  final String firstName;
+  final String lastName;
+  final String profilePicture;
   final Function? onPressedProfile;
   final Function? onPressedDelete;
   final int? daysTillExp;
   final int? visitsThisYear;
 
   ActiveFriendsListCard(
-      {this.firstName,
-      this.lastName,
-      this.profilePicture,
+      {required this.firstName,
+      required this.lastName,
+      required this.profilePicture,
       this.onPressedProfile,
       this.onPressedDelete,
-      this.daysTillExp,
-      this.visitsThisYear});
+      required this.daysTillExp,
+      required this.visitsThisYear});
 
   void setAlert(context) {
     Alert(
@@ -1455,7 +1465,7 @@ class ActiveFriendsListCard extends StatelessWidget {
               height: 60,
               width: 60,
               child: CircleAvatar(
-                backgroundImage: AssetImage(profilePicture!),
+                backgroundImage: NetworkImage(profilePicture),
               ),
             ),
           ),
@@ -1479,13 +1489,24 @@ class ActiveFriendsListCard extends StatelessWidget {
   }
 }
 
-class InactiveFriendsListCard extends StatefulWidget {
-  @override
-  _InactiveFriendsListCardState createState() =>
-      _InactiveFriendsListCardState();
-}
+class InactiveFriendsListCard extends StatelessWidget {
+  final String firstName;
+  final String lastName;
+  final String profilePicture;
+  final Function onPressedProfile;
+  final Function? onPressedDelete;
+  final int daysInactive;
 
-class _InactiveFriendsListCardState extends State<InactiveFriendsListCard> {
+  const InactiveFriendsListCard(
+      {Key? key,
+      required this.firstName,
+      required this.lastName,
+      required this.profilePicture,
+      required this.onPressedProfile,
+      this.onPressedDelete,
+      required this.daysInactive})
+      : super(key: key);
+
   void setAlert(context) {
     Alert(
       context: context,
@@ -1499,7 +1520,7 @@ class _InactiveFriendsListCardState extends State<InactiveFriendsListCard> {
             "Yes",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: onPressedDelete as void Function(),
           width: 120,
         ),
         DialogButton(
@@ -1526,19 +1547,22 @@ class _InactiveFriendsListCardState extends State<InactiveFriendsListCard> {
         ),
         child: ListTile(
           title: SubjectIconText(
-            text: 'Aaron Mackie',
+            text: '$firstName $lastName',
             fontSize: kTextSize16,
           ),
           subtitle: Text(
-            'Days Inactive: 57',
+            'Days Inactive: ${daysInactive * -1}',
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           // tileColor: Colors.white,
           leading: Container(
             height: 60,
             width: 60,
-            child: CircleAvatar(
-              backgroundImage: AssetImage('assets/Profile.jpg'),
+            child: InkWell(
+              onTap: onPressedProfile as void Function()?,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(profilePicture),
+              ),
             ),
           ),
           dense: true,
@@ -1942,19 +1966,27 @@ class ComplimentCard1 extends StatelessWidget {
   }
 }
 
-class ComplimentCard extends StatefulWidget {
+class ComplimentCard extends StatelessWidget {
   final String compliment;
+  final String author;
+  final String profilePicture;
+  final String year;
+  final String month;
+  final String day;
+  final Function onPressDelete;
 
-  ComplimentCard({required this.compliment});
+  const ComplimentCard(
+      {Key? key,
+      required this.onPressDelete,
+      required this.compliment,
+      required this.author,
+      required this.profilePicture,
+      required this.year,
+      required this.month,
+      required this.day})
+      : super(key: key);
+
   @override
-  _ComplimentCardState createState() => _ComplimentCardState(compliment);
-}
-
-class _ComplimentCardState extends State<ComplimentCard> {
-  final String compliment;
-
-  _ComplimentCardState(this.compliment);
-
   void setAlert(context) {
     Alert(
       context: context,
@@ -1967,7 +1999,7 @@ class _ComplimentCardState extends State<ComplimentCard> {
             "Yes",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: onPressDelete as void Function(),
           width: 120,
         ),
         DialogButton(
@@ -1984,23 +2016,28 @@ class _ComplimentCardState extends State<ComplimentCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       margin: EdgeInsets.all(10),
-      color: Colors.white,
+      color: kclearContainer,
+      shadowColor: Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {},
                         child: CircleAvatar(
                           radius: 20,
-                          backgroundImage: AssetImage('assets/profile13.jpg'),
+                          backgroundImage: NetworkImage(profilePicture),
                         ),
                       ),
                       Padding(
@@ -2008,7 +2045,7 @@ class _ComplimentCardState extends State<ComplimentCard> {
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: Text(
-                            'Aaron Mackie',
+                            author,
                             // textAlign: TextAlign.left,
                             style: TextStyle(
                                 // fontSize: kProfileIconTextSize,
@@ -2025,15 +2062,31 @@ class _ComplimentCardState extends State<ComplimentCard> {
                 IconButton(
                     icon: Icon(Icons.delete_outlined, color: Colors.red),
                     onPressed: () {
-                      setState(() {
-                        setAlert(context);
-                      });
+                      setAlert(context);
                     })
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(compliment),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(compliment, textAlign: TextAlign.start),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(5),
+                child: Text(
+                  '$month/$day/$year',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      letterSpacing: 1,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                      fontSize: 10),
+                ),
+              ),
             ),
           ],
         ),
@@ -2064,15 +2117,14 @@ class _FriendTypeInfoCardState extends State<FriendTypeInfoCard> {
         onTap: () {
           // setAlert(context);
           showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
             context: context,
             isScrollControlled: true,
-            builder: (context) => SingleChildScrollView(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                // padding: EdgeInsets.only(
-                //     bottom: MediaQuery.of(context).viewInsets.bottom),
+            builder: (context) => Theme(
+              data: ThemeData(canvasColor: Colors.transparent),
+              child: SingleChildScrollView(
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
@@ -2452,16 +2504,29 @@ class MySearchList extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class FriendConfirmationCard extends StatelessWidget {
   final String fullName;
+  String? profileAccuracyValue;
+  String? safetyRatingValue;
   final String picture;
+  final Function(String)? onChangedCompliment;
+  final Function onChangedProfileA;
+  final Function onChangedSafety;
   final Widget child;
   final Function onTapConfirm;
+  GlobalKey<FormState> globalFormState;
 
   var selectedValue;
 
   FriendConfirmationCard({
+    required this.globalFormState,
     required this.fullName,
+    this.profileAccuracyValue,
+    this.safetyRatingValue,
+    this.onChangedCompliment,
+    required this.onChangedProfileA,
+    required this.onChangedSafety,
     required this.picture,
     required this.child,
     required this.onTapConfirm,
@@ -2473,10 +2538,10 @@ class FriendConfirmationCard extends StatelessWidget {
   // List<bool> selectionList = List.generate(2, (_) => false);
 
   bool isValidFormReview = false;
-  var _numberFormReview = GlobalKey<FormState>();
+  // var _numberFormReview = GlobalKey<FormState>();
 
   void checkProfileFormReview() {
-    if (_numberFormReview.currentState!.validate()) {
+    if (globalFormState.currentState!.validate()) {
       isValidFormReview = true;
     } else {
       isValidFormReview = false;
@@ -2572,12 +2637,10 @@ class FriendConfirmationCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: DropDownFormCardStr(
-                              value: selectedValue,
+                              value: safetyRatingValue,
                               hintText:
                                   'Was $fullName\nsafe to meet and talk to?',
-                              onChanged: (value) {
-                                selectedValue = value;
-                              },
+                              onChanged: onChangedSafety,
                               list: ['Yes', 'No'],
                             ),
                           ),
@@ -2598,12 +2661,10 @@ class FriendConfirmationCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: DropDownFormCardStr(
-                              value: selectedValue,
+                              value: profileAccuracyValue,
                               hintText:
                                   'Did $fullName\nmatch his profile description?',
-                              onChanged: (value) {
-                                selectedValue = value;
-                              },
+                              onChanged: onChangedProfileA,
                               list: ['Yes', 'No'],
                             ),
                           ),
@@ -2655,7 +2716,7 @@ class FriendConfirmationCard extends StatelessWidget {
                           minLines: 1,
                           keyboardType: TextInputType.name,
                           textAlign: TextAlign.center,
-                          onChanged: (value) {},
+                          onChanged: onChangedCompliment,
                           style: TextStyle(
                               color: Colors.blueGrey,
                               fontSize: 17,
@@ -2957,8 +3018,53 @@ class TextFormCard extends StatelessWidget {
           onChanged: onChanged as void Function(String)?,
           style: TextStyle(color: Colors.blueGrey, fontSize: 16),
           decoration: InputDecoration(
-            labelText: '',
-            labelStyle: TextStyle(fontSize: 1),
+            // labelText: '',
+            // labelStyle: TextStyle(fontSize: 1),
+            hintText: hintText,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+            errorStyle: TextStyle(color: Colors.red),
+          ),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
+  }
+}
+
+class TextFormCardUnrequired extends StatelessWidget {
+  const TextFormCardUnrequired({this.hintText, this.onChanged, this.value});
+
+  final Function? onChanged;
+  final String? hintText;
+  final String? value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        child: TextFormField(
+          initialValue: value,
+          keyboardType: TextInputType.name,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(
+                '[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]')),
+          ],
+          textAlign: TextAlign.start,
+          // validator: (inputValue) {
+          //   if (inputValue!.isEmpty) {
+          //     return "Field is Required";
+          //   }
+          //   return null;
+          // },
+          onChanged: onChanged as void Function(String)?,
+          style: TextStyle(color: Colors.blueGrey, fontSize: 16),
+          decoration: InputDecoration(
+            // labelText: '',
+            // labelStyle: TextStyle(fontSize: 1),
             hintText: hintText,
             contentPadding: const EdgeInsets.symmetric(horizontal: 10),
             errorStyle: TextStyle(color: Colors.red),
@@ -2997,10 +3103,10 @@ class DropDownFormCardInt extends StatelessWidget {
           value: value,
           elevation: 16,
           isExpanded: true,
-          style: TextStyle(color: Colors.blueGrey, fontSize: 17),
+          style: TextStyle(color: Colors.blueGrey, fontSize: 16),
           decoration: InputDecoration(
-            labelText: '',
-            labelStyle: TextStyle(fontSize: 1),
+            // labelText: '',
+            // labelStyle: TextStyle(fontSize: 1),
             hintText: hintText,
             contentPadding: const EdgeInsets.symmetric(horizontal: 10),
             errorStyle: TextStyle(color: Colors.red),
@@ -3033,9 +3139,9 @@ class DropDownFormCardStr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: DropdownButtonFormField<String>(
           validator: (inputValue) {
             if (inputValue == null) {
@@ -3046,12 +3152,12 @@ class DropDownFormCardStr extends StatelessWidget {
           value: value,
           elevation: 16,
           isExpanded: true,
-          style: TextStyle(color: Colors.blueGrey, fontSize: 17),
+          style: TextStyle(color: Colors.blueGrey, fontSize: 16),
           decoration: InputDecoration(
             // labelText: '',
             // labelStyle: TextStyle(fontSize: 1),
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 13),
+            hintStyle: TextStyle(color: Colors.blueGrey, fontSize: 16),
             contentPadding: const EdgeInsets.symmetric(horizontal: 10),
             errorStyle: TextStyle(color: Colors.red),
           ),

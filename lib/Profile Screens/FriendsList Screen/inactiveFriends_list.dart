@@ -1,12 +1,16 @@
 import 'package:discovret1_0/Components/background_screen.dart';
 import 'package:discovret1_0/Components/discovret_scaffold.dart';
 import 'package:discovret1_0/Components/widgets.dart';
+import 'package:discovret1_0/Profile%20Screens/FriendsList%20Screen/view_friend_profile.dart';
+import 'package:discovret1_0/Provider%20Services/profile_info_provider.dart';
+import 'package:discovret1_0/Provider%20Services/provider_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:discovret1_0/Constants/discovret_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:discovret1_0/Components/icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'friend_search.dart';
 
@@ -16,9 +20,19 @@ class InactiveFriendsList extends StatefulWidget {
   _InactiveFriendsListState createState() => _InactiveFriendsListState();
 }
 
+Widget? nullSafetyWidget(
+    {int? count, Widget? nullWidget, Widget? unNullWidget}) {
+  if (count == 0) {
+    return nullWidget;
+  } else
+    return unNullWidget;
+}
+
 class _InactiveFriendsListState extends State<InactiveFriendsList> {
   @override
   Widget build(BuildContext context) {
+    final UserProfileInfo userProfileInfo =
+        Provider.of<UserProfileInfo>(context);
     return DiscovretScaffold(
       index: 2,
       searchIconActive: Icon(Icons.person_search,
@@ -97,7 +111,8 @@ class _InactiveFriendsListState extends State<InactiveFriendsList> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Inactive Friends: 12".toUpperCase(),
+                    "Inactive Friends: ${userProfileInfo.inActiveFriendsCount}"
+                        .toUpperCase(),
                     style: GoogleFonts.lato(
                       textStyle: TextStyle(
                         fontSize: 20,
@@ -117,38 +132,82 @@ class _InactiveFriendsListState extends State<InactiveFriendsList> {
             SizedBox(
               height: 10,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: kDiscovretIconSize,
-                  width: kDiscovretIconSize,
-                  child: Image.asset("assets/Disc_Map_NoBorders.png"),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  child: SubjectIconTextWhite(
-                    text: 'No inactive friends at this time',
-                    fontSize: 16,
+            nullSafetyWidget(
+              count: userProfileInfo.inActiveFriendsCount,
+              nullWidget: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 40,
                   ),
-                ),
-              ],
-            ),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
-            InactiveFriendsListCard(),
+                  Container(
+                    height: kDiscovretIconSize,
+                    width: kDiscovretIconSize,
+                    child: Image.asset("assets/Disc_Map_NoBorders.png"),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    child: SubjectIconTextWhite(
+                      text: 'No inactive friends at this time',
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              unNullWidget: ListView.builder(
+                  controller: ScrollController(),
+                  itemCount: userProfileInfo.inActiveFriendsCount,
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final friendObject =
+                        userProfileInfo.listInActiveFriends[index]!;
+                    return InactiveFriendsListCard(
+                        firstName: friendObject.firstName,
+                        lastName: friendObject.lastName,
+                        daysInactive: friendObject.daysTillExp,
+                        profilePicture: friendObject.profilePicture,
+                        onPressedDelete: () {
+                          // Navigator.pop(context);
+                          // userProfileInfo.deleteFriend(
+                          //     object: friendObject,
+                          //     list: userProfileInfo.listActiveFriends);
+                        },
+                        onPressedProfile: () {
+                          Navigator.pushNamed(
+                            context,
+                            ViewProfileFriend.id,
+                            arguments: ViewProfileFriendObject(
+                              photoCount: friendObject.userPictures.length,
+                              firstLanguage: friendObject.firstLanguage,
+                              gender: friendObject.gender,
+                              profileAccuracyRating:
+                                  friendObject.profileAccuracyRating,
+                              reviewCount: friendObject.reviewCount,
+                              safetyRating: friendObject.safetyRating,
+                              firstName: friendObject.firstName,
+                              lastName: friendObject.lastName,
+                              bio: friendObject.bio,
+                              daysTillExp: 73,
+                              visitsThisYear: friendObject.visitsThisYear,
+                              profilePhoto: friendObject.profilePicture,
+                              relationshipStatus:
+                                  friendObject.relationshipStatus,
+                              biologicalSex: friendObject.sex,
+                              age: friendObject.age,
+                              interestedIn: friendObject.interestedIn,
+                              userPhotos: friendObject.userPictures,
+                              allFriends: friendObject.allFriends,
+                              allPlaces: friendObject.allPlaces,
+                              allBusinesses: friendObject.allBusinesses,
+                            ),
+                          );
+                        });
+                  }),
+            )!
           ],
         ),
       ),

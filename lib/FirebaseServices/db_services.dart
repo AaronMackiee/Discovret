@@ -42,6 +42,22 @@ class FirestoreService {
     }
   }
 
+  Stream<List<FriendListObject>>? getListOfFriends() {
+    final Stream<User?>? user = _auth.streamUser;
+    if (user != null) {
+      return _auth.streamUser.switchMap((User? user) {
+        return _db
+            .collection('UserProfileInfo/${_auth.getUser!.uid}/AllFriends')
+            .snapshots()
+            .map((snapshot) {
+          return snapshot.docs.map((docs) {
+            return FriendListObject.fromMap(data: docs.data());
+          }).toList();
+        });
+      });
+    }
+  }
+
   Stream<List<AllFriendsObject>>? getFriendsList() {
     final Stream<User?>? user = _auth.streamUser;
     if (user != null) {
@@ -104,70 +120,35 @@ class FirestoreService {
     }
   }
 
-  // Stream<DbUserProfileInfo> getUserProfileInfo() {
-  //   final User? user = _auth.getUser;
-  //           Document<dynamic> doc = Document(path: 'UserProfileInfo/${user!.uid}');
-  //           return doc.ref.snapshots().map((snapshot) {
-  //             Map<String, dynamic> newdata =
-  //                 snapshot.data() as Map<String, dynamic>;
-  //             return DbUserProfileInfo.fromMap(data: newdata);
-  //           });
-  // }
-
-  // Stream<DbUserProfileSearchInfo>? getUserProfileSearcInfo() {
-  //   return _auth.authStateChanges().switchMap((User? user) {
-  //         if (user != null) {
-  //           Document<dynamic> doc = Document(path: 'UserProfileSearchInfo/${user.uid}');
-  //           return doc.ref.snapshots().map((snapshot) {
-  //             Map<String, dynamic> newdata =
-  //                 snapshot.data() as Map<String, dynamic>;
-  //             return DbUserProfileSearchInfo.fromMap(data: newdata);
-  //           });
-  //         } else {
-  //           return null;
-  //           // return Stream<DbUserProfileSearchInfo>.value(null);
-  //         }
-  //       } as Stream<DbUserProfileSearchInfo> Function(User? user));
-  // }
-
-  // Stream<DbUserProfileSearchInfo> getUserProfileSearcInfo() {
-  //   final User? user = _auth.getUser;
-  //   Document<dynamic> doc =
-  //       Document(path: 'UserProfileSearchInfo/${user!.uid}');
-  //   return doc.ref.snapshots().map((snapshot) {
-  //     Map<String, dynamic> newdata = snapshot.data() as Map<String, dynamic>;
-  //     return DbUserProfileSearchInfo.fromMap(data: newdata);
-  //   });
-  // }
-
-  Stream<DbUserProfileSearchInfo>? getUserProfileSearcInfo() {
+  Stream<List<ComplimentObject>>? getUserCompliments() {
     final Stream<User?>? user = _auth.streamUser;
     if (user != null) {
       return _auth.streamUser.switchMap((User? user) {
-        Document<dynamic> doc =
-            Document(path: 'UserProfileSearchInfo/${user!.uid}');
-        return doc.ref.snapshots().map((snapshot) {
-          Map<String, dynamic> newdata =
-              snapshot.data() as Map<String, dynamic>;
-          return DbUserProfileSearchInfo.fromMap(data: newdata);
+        return _db
+            .collection('UserProfileInfo/${user!.uid}/Compliments')
+            .snapshots()
+            .map((snapshot) {
+          return snapshot.docs.map((docs) {
+            return ComplimentObject.fromMap(data: docs.data());
+          }).toList();
         });
       });
     }
   }
 
-  // Stream<T> streamData() {
-  //   return ref.snapshots().map((value) => Global.models[T](value.data) as T);
-  // }
-
-  // Stream<T> get documentStream {
-  //   return _auth.authStateChanges().switchMap((user) {
-  //     if (user != null) {
-  //       Document<T> doc = Document<T>(path: '$collection/zrh1X2mrxuIwq5iy8huK');
-  //       return doc.streamData();
-  //     } else {
-  //       return Stream<T>.value(null);
-  //     }
-  //   });
+  // Stream<DbUserProfileSearchInfo>? getUserProfileSearcInfo() {
+  //   final Stream<User?>? user = _auth.streamUser;
+  //   if (user != null) {
+  //     return _auth.streamUser.switchMap((User? user) {
+  //       Document<dynamic> doc =
+  //           Document(path: 'UserProfileSearchInfo/${user!.uid}');
+  //       return doc.ref.snapshots().map((snapshot) {
+  //         Map<String, dynamic> newdata =
+  //             snapshot.data() as Map<String, dynamic>;
+  //         return DbUserProfileSearchInfo.fromMap(data: newdata);
+  //       });
+  //     });
+  //   }
   // }
 
   Future<void> addSearchItem(
@@ -191,13 +172,24 @@ class FirestoreService {
     return ref.update({field: value});
   }
 
+  Future deleteCompliment({required String docId}) {
+    final ref =
+        _db.collection('UserProfileInfo/${_auth.getUser!.uid}/Compliments');
+
+    return ref.doc(docId).delete();
+  }
+
   Future updateConfirmationList(
-      {required String fieldArray,required String field, required docId, required dynamic valueArray, required dynamic value}) {
-        final Document<dynamic> doc = Document(path: 'FriendConfirmations/$docId');
-  
+      {required String fieldArray,
+      required String field,
+      required docId,
+      required dynamic valueArray,
+      required dynamic value}) async {
+    final Document<dynamic> doc = Document(path: 'FriendConfirmations/$docId');
+
     return doc.ref.update({
-      fieldArray: FieldValue.arrayRemove([valueArray]),
-      field: value,
+      field: await value,
+      fieldArray: FieldValue.arrayRemove([await valueArray]),
     });
   }
 
@@ -233,7 +225,7 @@ class FirestoreService {
 
   Future updateProfileInfoList(
       {required String field, required dynamic value}) {
-    final ref = _db.collection('UserProfileSearchInfo').doc(_auth.getUser!.uid);
+    final ref = _db.collection('UserProfileInfo').doc(_auth.getUser!.uid);
 
     return ref.update(
       {
@@ -268,14 +260,23 @@ class FirestoreService {
     return ref.update({field: value});
   }
 
-  Future deleteAllProfileInfoList({required String field}) {
-    final ref = _db.collection('UserProfileSearchInfo').doc(_auth.getUser!.uid);
+  Future deleteProfileInfoList(
+      {required String field, required dynamic values}) {
+    final ref = _db.collection('UserProfileInfo').doc(_auth.getUser!.uid);
 
     return ref.update(
       {
-        field: FieldValue.delete(),
+        field: FieldValue.arrayRemove(values),
       },
     );
+  }
+
+  Future deleteFriend({required String docId}) {
+    final ref = _db
+        .collection('UserProfileInfo/${_auth.getUser!.uid}/AllFriends')
+        .doc(docId);
+
+    return ref.delete();
   }
 }
 

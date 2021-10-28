@@ -3,6 +3,7 @@ import 'package:discovret1_0/Components/discovret_scaffold.dart';
 import 'package:discovret1_0/Components/widgets.dart';
 import 'package:discovret1_0/Provider Services/profile_info_provider.dart';
 import 'package:discovret1_0/Profile Screens/FriendsList%20Screen/view_friend_profile.dart';
+import 'package:discovret1_0/Provider%20Services/provider_models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:discovret1_0/Constants/discovret_constants.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,8 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Active Friends: 12".toUpperCase(),
+                    "Active Friends: ${userProfileInfo.activeFriendsCount}"
+                        .toUpperCase(),
                     style: GoogleFonts.lato(
                       textStyle: TextStyle(
                         fontSize: 20,
@@ -129,7 +131,7 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 20,
+                    height: 40,
                   ),
                   Container(
                     height: kDiscovretIconSize,
@@ -160,34 +162,40 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                         lastName: friendObject.lastName,
                         daysTillExp: friendObject.daysTillExp,
                         visitsThisYear: friendObject.visitsThisYear,
-                        profilePicture: friendObject.profilePhoto,
+                        profilePicture: friendObject.profilePicture,
                         onPressedDelete: () {
-                          Navigator.pop(context);
-                          userProfileInfo.deleteFriend(
-                              object: friendObject,
-                              list: userProfileInfo.listActiveFriends);
+                          // Navigator.pop(context);
+                          // userProfileInfo.deleteFriend(
+                          //     object: friendObject,
+                          //     list: userProfileInfo.listActiveFriends);
                         },
                         onPressedProfile: () {
-                          Navigator.push(
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ViewProfileFriend(
-                                firstLanguage: friendObject.firstLanguage,
-                                gender: friendObject.gender,
-                                rating: friendObject.rating,
-                                firstName: friendObject.firstName,
-                                lastName: friendObject.lastName,
-                                bio: friendObject.bio,
-                                daysTillExp: friendObject.daysTillExp,
-                                visitsThisYear: friendObject.visitsThisYear,
-                                profilePhoto: friendObject.profilePhoto,
-                                relationshipStatus:
-                                    friendObject.relationshipStatus,
-                                biologicalSex: friendObject.biologicalSex,
-                                age: friendObject.age,
-                                interestedIn: friendObject.interestedIn,
-                                photos: friendObject.listPhotos,
-                              ),
+                            ViewProfileFriend.id,
+                            arguments: ViewProfileFriendObject(
+                              photoCount: friendObject.userPictures.length,
+                              firstLanguage: friendObject.firstLanguage,
+                              gender: friendObject.gender,
+                              profileAccuracyRating:
+                                  friendObject.profileAccuracyRating,
+                              reviewCount: friendObject.reviewCount,
+                              safetyRating: friendObject.safetyRating,
+                              firstName: friendObject.firstName,
+                              lastName: friendObject.lastName,
+                              bio: friendObject.bio,
+                              daysTillExp: 73,
+                              visitsThisYear: friendObject.visitsThisYear,
+                              profilePhoto: friendObject.profilePicture,
+                              relationshipStatus:
+                                  friendObject.relationshipStatus,
+                              biologicalSex: friendObject.sex,
+                              age: friendObject.age,
+                              interestedIn: friendObject.interestedIn,
+                              userPhotos: friendObject.userPictures,
+                              allFriends: friendObject.allFriends,
+                              allPlaces: friendObject.allPlaces,
+                              allBusinesses: friendObject.allBusinesses,
                             ),
                           );
                         });
