@@ -1392,8 +1392,8 @@ class ActiveFriendsListCard extends StatelessWidget {
   final String profilePicture;
   final Function? onPressedProfile;
   final Function? onPressedDelete;
-  final int? daysTillExp;
-  final int? visitsThisYear;
+  final int daysTillExp;
+  final int visitsThisYear;
 
   ActiveFriendsListCard(
       {required this.firstName,
@@ -1960,6 +1960,126 @@ class ComplimentCard1 extends StatelessWidget {
               child: Text(compliment!),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ComplimentCard2 extends StatelessWidget {
+  final String compliment;
+  final String author;
+  final String? profilePicture;
+  final String year;
+  final String month;
+  final String day;
+  final Function onPressDelete;
+
+  ComplimentCard2(
+      {required this.onPressDelete,
+      required this.compliment,
+      required this.author,
+      required this.profilePicture,
+      required this.year,
+      required this.month,
+      required this.day});
+
+  void setAlert(context) {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "Remove",
+      desc:
+          "Are you sure you want to remove this friend.\nIt will cost you 0.25 disc coin.",
+      buttons: [
+        DialogButton(
+          color: kDiscovretGreen,
+          child: Text(
+            "Yes",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: onPressDelete as void Function()?,
+          width: 120,
+        ),
+        DialogButton(
+          color: kDiscovretGreen,
+          child: Text(
+            "No",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    ).show();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: kclearContainer,
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: ListTile(
+          title: SubjectIconText(
+            text: author,
+            fontSize: kTextSize16,
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(' $compliment',
+                    style: TextStyle(fontSize: 12
+                        // color: kDiscovretGreen,
+                        ),
+                    maxLines: 3,
+                    textAlign: TextAlign.left),
+              ),
+              SizedBox(height: 15),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  '$day/$month/$year',
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  maxLines: 3,
+                ),
+              ),
+            ],
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          tileColor: kclearContainer,
+          leading: GestureDetector(
+            onTap: () {},
+            child: Container(
+              height: 60,
+              width: 60,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(profilePicture!),
+              ),
+            ),
+          ),
+          isThreeLine: true,
+          dense: true,
+          trailing: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+                icon: Icon(
+                  Icons.person_remove_alt_1,
+                  size: 30,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  setAlert(context);
+                }),
+          ),
         ),
       ),
     );

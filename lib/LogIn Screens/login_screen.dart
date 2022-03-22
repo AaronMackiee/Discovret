@@ -164,6 +164,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                   ],
                 ),
                 SizedBox(height: 40),
+                SizedBox(height: 30),
                 Column(
                   children: [
                     // Text(dbUserProfileSearchInfo.languages.first),
@@ -224,6 +225,7 @@ class _LogInState extends State<LogIn> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     SizedBox(height: 15),
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(

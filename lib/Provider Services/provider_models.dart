@@ -2,7 +2,7 @@ class FriendObject {
   List<dynamic>? allFriends;
   List<dynamic>? allBusinesses;
   List<dynamic>? allPlaces;
-  String? uid;
+  String uid;
   String firstName;
   String lastName;
   String sex;
@@ -16,7 +16,7 @@ class FriendObject {
   int reviewCount;
   int safetyRating;
   String profilePicture;
-  List<dynamic>? userPictures;
+  List<dynamic> userPictures;
   int totalVisits;
   int visitsThisYear;
   int? daysTillExp;
@@ -31,7 +31,7 @@ class FriendObject {
       {this.allFriends,
       this.allBusinesses,
       this.allPlaces,
-      this.uid,
+      required this.uid,
       required this.firstName,
       required this.lastName,
       required this.sex,
@@ -46,7 +46,7 @@ class FriendObject {
       required this.profileAccuracyRating,
       required this.safetyRating,
       required this.reviewCount,
-      this.userPictures,
+      required this.userPictures,
       required this.profilePicture,
       this.languages,
       this.countriesLivedIn,
@@ -146,7 +146,7 @@ class ViewProfileFriendObject {
   final String firstName;
   final String lastName;
   final String? bio;
-  final int? visitsThisYear;
+  final int visitsThisYear;
   final int? daysTillExp;
   final String biologicalSex;
   final String? gender;
@@ -155,9 +155,9 @@ class ViewProfileFriendObject {
   final String relationshipStatus;
   final String firstLanguage;
   final List<dynamic> userPhotos;
-  final List<dynamic> allFriends;
-  final List<dynamic> allBusinesses;
-  final List<dynamic> allPlaces;
+  final List<dynamic>? allFriends;
+  final List<dynamic>? allBusinesses;
+  final List<dynamic>? allPlaces;
   final List<dynamic>? countriedLivedIn;
   final List<dynamic>? culturalHeritage;
   final List<dynamic>? hobbiesInterest;
@@ -175,7 +175,7 @@ class ViewProfileFriendObject {
       required this.firstName,
       required this.lastName,
       this.bio,
-      this.visitsThisYear,
+      required this.visitsThisYear,
       this.daysTillExp,
       required this.biologicalSex,
       this.gender,

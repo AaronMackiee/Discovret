@@ -172,9 +172,9 @@ class _CloseFriendsListState extends State<CloseFriendsList> {
                   physics: ScrollPhysics(),
                   itemBuilder: (context, index) {
                     final friendObject =
-                        userProfileInfo.listCloseFriends[index]!;
+                        userProfileInfo.listCloseFriends[index];
                     return CloseFriendListCard(
-                        firstName: friendObject.firstName,
+                        firstName: friendObject!.firstName,
                         lastName: friendObject.lastName,
                         daysTillExp: friendObject.daysTillExp,
                         visitsThisYear: friendObject.visitsThisYear,
@@ -209,9 +209,9 @@ class _CloseFriendsListState extends State<CloseFriendsList> {
                               age: friendObject.age,
                               interestedIn: friendObject.interestedIn,
                               userPhotos: friendObject.userPictures,
-                              allFriends: friendObject.allFriends,
-                              allPlaces: friendObject.allPlaces,
-                              allBusinesses: friendObject.allBusinesses,
+                              allFriends: friendObject.allFriends!,
+                              allPlaces: friendObject.allPlaces!,
+                              allBusinesses: friendObject.allBusinesses!,
                             ),
                           );
                         });

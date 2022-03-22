@@ -23,7 +23,7 @@ class _IntroScreen extends State<IntroScreen> {
           color: Colors.white), //tile font size, weight and color
       bodyTextStyle: TextStyle(fontSize: 19.0, color: Colors.white),
       //body text size and color
-      descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       //decription padding
       imagePadding: EdgeInsets.all(20), //image padding
       boxDecoration: BoxDecoration(
@@ -73,7 +73,7 @@ class _IntroScreen extends State<IntroScreen> {
       onDone: () => goHomepage(context), //go to home page on done
       onSkip: () => goHomepage(context), // You can override on skip
       showSkipButton: true,
-      skipFlex: 0,
+      // skipFlex: 0,
       nextFlex: 0,
       skip: Text(
         'Skip',

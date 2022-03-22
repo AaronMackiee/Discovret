@@ -89,7 +89,7 @@ class ViewProfileFriend extends StatelessWidget {
     AllFriendsObject friend;
 
     for (friend in _dbAllFriendsList) {
-      if (args.allFriends.contains(friend.uid)) {
+      if (args.allFriends!.contains(friend.uid)) {
         mutualFriends.add(friend);
       }
     }
@@ -456,7 +456,7 @@ class ViewProfileFriend extends StatelessWidget {
                                 firstName: friendObject.firstName,
                                 lastName: friendObject.lastName,
                                 bio: friendObject.bio,
-                                daysTillExp: 73,
+                                daysTillExp: friendObject.daysTillExp,
                                 visitsThisYear: friendObject.visitsThisYear,
                                 profilePhoto: friendObject.profilePicture,
                                 relationshipStatus:
@@ -465,9 +465,9 @@ class ViewProfileFriend extends StatelessWidget {
                                 age: friendObject.age,
                                 interestedIn: friendObject.interestedIn,
                                 userPhotos: friendObject.userPictures,
-                                allFriends: friendObject.allFriends,
-                                allPlaces: friendObject.allPlaces,
-                                allBusinesses: friendObject.allBusinesses,
+                                allFriends: friendObject.allFriends!,
+                                allPlaces: friendObject.allPlaces!,
+                                allBusinesses: friendObject.allBusinesses!,
                               ),
                             );
                     },

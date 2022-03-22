@@ -27,10 +27,6 @@ class FriendsList extends StatefulWidget {
 
 class _FriendsListState extends State<FriendsList>
     with SingleTickerProviderStateMixin {
-  late FriendListObject friend;
-  late AllFriendsObject activeFriend;
-  late AllFriendsObject inactiveFriend;
-  late AllFriendsObject closeFriend;
 
   // AnimationController controller;
 
@@ -61,119 +57,6 @@ class _FriendsListState extends State<FriendsList>
     final _dbUserConfirmations =
         Provider.of<List<ConfirmationsObject>>(context);
     final _dbAllFriendsList = Provider.of<List<AllFriendsObject>>(context);
-    if ((userProfileInfo.listActiveFriends.isEmpty &&
-            userProfileInfo.listInActiveFriends.isEmpty) ||
-        _dbListOfFriends.isEmpty) {
-      for (friend in _dbListOfFriends) {
-        userProfileInfo.addFriend(
-            friendType: userProfileInfo.listAllFriends,
-            object: friend.friendUid);
-        friend.daysTillExp = friend.lastVisit
-                .toDate()
-                .difference(DateTime.now())
-                .inDays
-                .toInt() +
-            365;
-        // int visitsThisYear = friend.visitsThisYear;
-        if (friend.daysTillExp > 0 && friend.visitsThisYear < 5) {
-          for (activeFriend in _dbAllFriendsList) {
-            if (friend.friendUid == activeFriend.uid) {
-              userProfileInfo.listActiveFriends.add(AllFriendsObject(
-                  uid: activeFriend.uid,
-                  allFriends: activeFriend.allFriends,
-                  allBusinesses: activeFriend.allBusinesses,
-                  allPlaces: activeFriend.allPlaces,
-                  firstName: activeFriend.firstName,
-                  lastName: activeFriend.lastName,
-                  sex: activeFriend.sex,
-                  firstLanguage: activeFriend.firstLanguage,
-                  interestedIn: activeFriend.interestedIn,
-                  relationshipStatus: activeFriend.relationshipStatus,
-                  age: activeFriend.age,
-                  gender: activeFriend.gender,
-                  profilePicture: activeFriend.profilePicture,
-                  bio: activeFriend.bio,
-                  userPictures: activeFriend.userPictures,
-                  totalVisits: friend.totalVisits,
-                  visitsThisYear: friend.visitsThisYear,
-                  daysTillExp: friend.daysTillExp,
-                  safetyRating: activeFriend.safetyRating,
-                  profileAccuracyRating: activeFriend.profileAccuracyRating,
-                  reviewCount: activeFriend.reviewCount,
-                  languages: activeFriend.languages,
-                  countriesLivedIn: activeFriend.countriesLivedIn,
-                  culturalHeritage: activeFriend.culturalHeritage,
-                  religion: activeFriend.religion,
-                  hobbiesInterest: activeFriend.hobbiesInterest));
-            }
-          }
-        } else if (friend.daysTillExp < 0) {
-          for (inactiveFriend in _dbAllFriendsList) {
-            if (friend.friendUid == inactiveFriend.uid) {
-              userProfileInfo.listInActiveFriends.add(AllFriendsObject(
-                  uid: inactiveFriend.uid,
-                  allFriends: inactiveFriend.allFriends,
-                  allBusinesses: inactiveFriend.allBusinesses,
-                  allPlaces: inactiveFriend.allPlaces,
-                  firstName: inactiveFriend.firstName,
-                  lastName: inactiveFriend.lastName,
-                  sex: inactiveFriend.sex,
-                  firstLanguage: inactiveFriend.firstLanguage,
-                  interestedIn: inactiveFriend.interestedIn,
-                  relationshipStatus: inactiveFriend.relationshipStatus,
-                  age: inactiveFriend.age,
-                  gender: inactiveFriend.gender,
-                  profilePicture: inactiveFriend.profilePicture,
-                  bio: inactiveFriend.bio,
-                  userPictures: inactiveFriend.userPictures,
-                  totalVisits: friend.totalVisits,
-                  visitsThisYear: friend.visitsThisYear,
-                  daysTillExp: friend.daysTillExp,
-                  safetyRating: inactiveFriend.safetyRating,
-                  profileAccuracyRating: inactiveFriend.profileAccuracyRating,
-                  reviewCount: inactiveFriend.reviewCount,
-                  languages: inactiveFriend.languages,
-                  countriesLivedIn: inactiveFriend.countriesLivedIn,
-                  culturalHeritage: inactiveFriend.culturalHeritage,
-                  religion: inactiveFriend.religion,
-                  hobbiesInterest: inactiveFriend.hobbiesInterest));
-            }
-          }
-        } else if (friend.daysTillExp > 0 && friend.visitsThisYear >= 5) {
-          for (closeFriend in _dbAllFriendsList) {
-            if (friend.friendUid == closeFriend.uid) {
-              userProfileInfo.listCloseFriends.add(AllFriendsObject(
-                  uid: closeFriend.uid,
-                  allFriends: closeFriend.allFriends,
-                  allBusinesses: closeFriend.allBusinesses,
-                  allPlaces: closeFriend.allPlaces,
-                  firstName: closeFriend.firstName,
-                  lastName: closeFriend.lastName,
-                  sex: closeFriend.sex,
-                  firstLanguage: closeFriend.firstLanguage,
-                  interestedIn: closeFriend.interestedIn,
-                  relationshipStatus: closeFriend.relationshipStatus,
-                  age: closeFriend.age,
-                  gender: closeFriend.gender,
-                  profilePicture: closeFriend.profilePicture,
-                  bio: closeFriend.bio,
-                  userPictures: closeFriend.userPictures,
-                  totalVisits: friend.totalVisits,
-                  visitsThisYear: friend.visitsThisYear,
-                  daysTillExp: friend.daysTillExp,
-                  safetyRating: closeFriend.safetyRating,
-                  profileAccuracyRating: closeFriend.profileAccuracyRating,
-                  reviewCount: closeFriend.reviewCount,
-                  languages: closeFriend.languages,
-                  countriesLivedIn: closeFriend.countriesLivedIn,
-                  culturalHeritage: closeFriend.culturalHeritage,
-                  religion: closeFriend.religion,
-                  hobbiesInterest: closeFriend.hobbiesInterest));
-            }
-          }
-        }
-      }
-    }
 
     return DiscovretScaffold(
         index: 2,
@@ -290,8 +173,7 @@ class _FriendsListState extends State<FriendsList>
                     friendCount: userProfileInfo.activeFriendsCount,
                     onpress: () {
                       Navigator.pushNamed(context, ActiveFriendsList.id);
-                      var test = userProfileInfo
-                          .listActiveFriends.first!.visitsThisYear;
+                      var test = userProfileInfo.listActiveFriends;
                       print(test);
                     },
                   ),

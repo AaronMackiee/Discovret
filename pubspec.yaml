@@ -33,7 +33,7 @@ dependencies:
   image_cropper: ^1.4.1
   path: ^1.8.0
   provider: ^6.0.0
-  qr_code_scanner: ^0.5.2
+  qr_code_scanner: ^0.7.0
   flutter_launcher_icons: ^0.9.1
   flutter_image_compress: ^1.1.0
   rflutter_alert: ^2.0.4
@@ -46,8 +46,8 @@ dependencies:
   loading_overlay: ^0.3.0
   flutter_password_strength: ^0.1.6
   flutter_cache_manager: ^3.1.2
-  introduction_screen: ^2.1.0
-  cloud_firestore: ^2.5.0
+  introduction_screen: ^3.0.0
+  cloud_firestore: ^3.1.10
   firebase_auth: ^3.0.2
   firebase_core: ^1.5.0
   firebase_storage: ^10.0.2
@@ -55,6 +55,11 @@ dependencies:
   qr_flutter: ^4.0.0
   cloud_functions: ^3.0.3
   uuid: ^3.0.5
+  permission_handler: ^9.2.0
+  location: ^4.3.0
+  # The following adds the HERE SDK for Flutter plugin folder to your application.
+  here_sdk:
+    path: plugins/here_sdk
 
 dev_dependencies:
   flutter_test:

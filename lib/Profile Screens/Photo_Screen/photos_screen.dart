@@ -37,7 +37,7 @@ class _ProfilePhotosScreenState extends State<ProfilePhotosScreen> {
   final FirebaseStorageServices _fS = FirebaseStorageServices();
   final FirestoreService _db = FirestoreService();
   final UserProfileInfo userProfileInfo = UserProfileInfo();
-  final DbUserProfileInfo dbUserProfileInfo = DbUserProfileInfo();
+  // final DbUserProfileInfo dbUserProfileInfo = DbUserProfileInfo();
 
   var imageFile;
   var imageFileDone;
@@ -91,7 +91,7 @@ class _ProfilePhotosScreenState extends State<ProfilePhotosScreen> {
       return;
     }
 
-    imageFile = await ImageCropper.cropImage(
+    var imageFile = await ImageCropper().cropImage(
         sourcePath: pickedFile.path,
         aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
     if (imageFile == null) {
@@ -154,7 +154,7 @@ class _ProfilePhotosScreenState extends State<ProfilePhotosScreen> {
           splashColor: kDiscovretYellow,
           onPressed: () {
             // userProfileInfo.listUserPhotos = dbUserProfileInfo.userPictures!;
-            getUserPhotoCount(list: dbUserProfileInfo.userPictures!);
+            getUserPhotoCount(list: dbUserProfileInfo.userPictures);
             print(userProfileInfo.listUserPhotos);
             _selectPhoto();
             // try {
@@ -195,7 +195,7 @@ class _ProfilePhotosScreenState extends State<ProfilePhotosScreen> {
         child: DiscovretBackground(
           child: GridView.builder(
             shrinkWrap: true,
-            itemCount: dbUserProfileInfo.userPictures!.length,
+            itemCount: dbUserProfileInfo.userPictures.length,
             gridDelegate:
                 SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
             // SliverGridDelegateWithMaxCrossAxisExtent(
@@ -204,7 +204,7 @@ class _ProfilePhotosScreenState extends State<ProfilePhotosScreen> {
             //     crossAxisSpacing: 0.5,
             //     mainAxisSpacing: 0.5),
             itemBuilder: (context, index) {
-              final userPhoto = dbUserProfileInfo.userPictures![index];
+              final userPhoto = dbUserProfileInfo.userPictures[index];
               return PictureGridTile(
                 cardimage: NetworkImage(userPhoto),
                 color: dbUserProfileInfo.profilePicture == userPhoto

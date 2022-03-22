@@ -125,7 +125,7 @@ class _ComplimentsListState extends State<ComplimentsList> {
                 physics: ScrollPhysics(),
                 itemBuilder: (context, index) {
                   final compliment = _dbUserCompliments[index];
-                  return ComplimentCard(
+                  return ComplimentCard2(
                     compliment: compliment.compliment,
                     author: compliment.author,
                     profilePicture: compliment.profilePicture,

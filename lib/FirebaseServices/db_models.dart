@@ -177,9 +177,9 @@ class ConfirmationsObject {
 }
 
 class AllFriendsObject {
-  List<dynamic> allFriends;
-  List<dynamic> allBusinesses;
-  List<dynamic> allPlaces;
+  List<dynamic>? allFriends;
+  List<dynamic>? allBusinesses;
+  List<dynamic>? allPlaces;
   String firstName;
   String uid;
   String lastName;
@@ -209,8 +209,8 @@ class AllFriendsObject {
       {required this.totalVisits,
       required this.daysTillExp,
       required this.visitsThisYear,
-      required this.allFriends,
-      required this.allBusinesses,
+      this.allFriends,
+      this.allBusinesses,
       required this.allPlaces,
       required this.uid,
       required this.firstName,
@@ -256,7 +256,7 @@ class AllFriendsObject {
       allFriends: (data['AllFriends'] as List? ?? []).toList(),
       allBusinesses: (data['AllBusinesses'] as List? ?? []).toList(),
       allPlaces: (data['AllPlaces'] as List? ?? []).toList(),
-      profilePicture: data['ProfilePicture'] ?? "",
+      profilePicture: data['ProfilePicture'] ?? "https://firebasestorage.googleapis.com/v0/b/discovret.appspot.com/o/UserPhotos%2Fyih0mQbWGOeQN77ZiVJqUHMAB7H2%2F2021-09-17T12%3A02%3A47.966506?alt=media&token=7c5533fe-7590-41c1-95d8-d1d4f5fb6e1d",
       languages: (data['Languages'] as List? ?? []).toList(),
       countriesLivedIn: (data['CountriesLivedIn'] as List? ?? []).toList(),
       culturalHeritage: (data['CulturalHeritage'] as List? ?? []).toList(),
@@ -310,21 +310,21 @@ class DbUserProfileInfo {
   List<dynamic>? allFriends;
   List<dynamic>? allBusinesses;
   List<dynamic>? allPlaces;
-  String? firstName;
-  String? uid;
-  String? lastName;
-  String? sex;
+  String firstName;
+  String uid;
+  String lastName;
+  String sex;
   String? gender;
-  String? firstLanguage;
-  String? interestedIn;
-  String? relationshipStatus;
-  int? age;
+  String firstLanguage;
+  String interestedIn;
+  String relationshipStatus;
+  int age;
   String? bio;
   dynamic profileAccuracyRating;
   dynamic reviewCount;
   dynamic safetyRating;
-  String? profilePicture;
-  List<dynamic>? userPictures;
+  String profilePicture;
+  List<dynamic> userPictures;
   List<dynamic>? languages;
   List<dynamic>? countriesLivedIn;
   List<dynamic>? culturalHeritage;
@@ -336,21 +336,21 @@ class DbUserProfileInfo {
       {this.allFriends,
       this.allBusinesses,
       this.allPlaces,
-      this.uid,
-      this.firstName,
-      this.lastName,
-      this.sex,
+      required this.uid,
+      required this.firstName,
+      required this.lastName,
+      required this.sex,
       this.gender,
-      this.firstLanguage,
-      this.interestedIn,
-      this.relationshipStatus,
-      this.age,
+      required this.firstLanguage,
+      required this.interestedIn,
+      required this.relationshipStatus,
+      required this.age,
       this.bio,
       this.profileAccuracyRating,
       this.safetyRating,
       this.reviewCount,
-      this.userPictures,
-      this.profilePicture,
+      required this.userPictures,
+      required this.profilePicture,
       this.languages,
       this.countriesLivedIn,
       this.culturalHeritage,

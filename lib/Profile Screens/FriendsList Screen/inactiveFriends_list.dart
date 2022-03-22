@@ -164,9 +164,9 @@ class _InactiveFriendsListState extends State<InactiveFriendsList> {
                   physics: ScrollPhysics(),
                   itemBuilder: (context, index) {
                     final friendObject =
-                        userProfileInfo.listInActiveFriends[index]!;
+                        userProfileInfo.listInActiveFriends[index];
                     return InactiveFriendsListCard(
-                        firstName: friendObject.firstName,
+                        firstName: friendObject!.firstName,
                         lastName: friendObject.lastName,
                         daysInactive: friendObject.daysTillExp,
                         profilePicture: friendObject.profilePicture,
@@ -200,9 +200,9 @@ class _InactiveFriendsListState extends State<InactiveFriendsList> {
                               age: friendObject.age,
                               interestedIn: friendObject.interestedIn,
                               userPhotos: friendObject.userPictures,
-                              allFriends: friendObject.allFriends,
-                              allPlaces: friendObject.allPlaces,
-                              allBusinesses: friendObject.allBusinesses,
+                              allFriends: friendObject.allFriends!,
+                              allPlaces: friendObject.allPlaces!,
+                              allBusinesses: friendObject.allBusinesses!,
                             ),
                           );
                         });

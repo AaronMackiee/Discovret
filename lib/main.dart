@@ -42,8 +42,10 @@ import 'Profile Screens/Photo_Screen/add_photo.dart';
 import 'Profile Screens/Photo_Screen/view_photo.dart';
 import 'package:provider/provider.dart';
 import 'QR Scanner Screens/understand_screen.dart';
+import 'package:here_sdk/core.dart';
 
 void main() async {
+  SdkContext.init(IsolateOrigin.main);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations(
@@ -111,6 +113,7 @@ class Discovret extends StatelessWidget {
             ]),
         StreamProvider<List<AllFriendsObject>>(
             create: (BuildContext context) => _db.getFriendsList(),
+            lazy: true,
             initialData: [
               AllFriendsObject(
                 daysTillExp: 0,

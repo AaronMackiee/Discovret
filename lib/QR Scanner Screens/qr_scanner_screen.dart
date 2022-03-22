@@ -540,7 +540,7 @@ class _QrScannerScreenState extends State<QrScannerScreen> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        final String uidString = result!.code;
+        final String uidString = result!.code!;
         print(uidString);
         controller.stopCamera();
         Navigator.pushNamed(context, QrCodeScreen.id);

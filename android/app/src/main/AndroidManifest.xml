@@ -1,8 +1,33 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.discovret1_0">
+
+    <!-- Permissions for internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permissions options for the `camera` group -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!-- Permissions options for the `location` group -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Permissions options for the `storage` group -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- Permissions options for the `accessMediaLocation` group -->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
    <application
         android:label="discovret1_0"
         android:icon="@mipmap/ic_launcher">
+
+   <meta-data android:name="com.here.sdk.access_key_id" android:value="7_Wl9gIH-GVH_HlNxLnYBg"/>
+   <meta-data android:name="com.here.sdk.access_key_secret" android:value="cADy1cCJbRRSGmKkf2EAzU2W-GsvQyj0UwY7VypcmGolScp4fVYaDX83B3KYS_dXqXVPZ4gBNqaeeqjDJvNVgA"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

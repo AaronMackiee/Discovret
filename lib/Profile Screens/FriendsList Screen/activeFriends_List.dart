@@ -156,9 +156,9 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                   physics: ScrollPhysics(),
                   itemBuilder: (context, index) {
                     final friendObject =
-                        userProfileInfo.listActiveFriends[index]!;
+                        userProfileInfo.listActiveFriends[index];
                     return ActiveFriendsListCard(
-                        firstName: friendObject.firstName,
+                        firstName: friendObject!.firstName,
                         lastName: friendObject.lastName,
                         daysTillExp: friendObject.daysTillExp,
                         visitsThisYear: friendObject.visitsThisYear,
@@ -184,7 +184,7 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                               firstName: friendObject.firstName,
                               lastName: friendObject.lastName,
                               bio: friendObject.bio,
-                              daysTillExp: 73,
+                              daysTillExp: friendObject.daysTillExp,
                               visitsThisYear: friendObject.visitsThisYear,
                               profilePhoto: friendObject.profilePicture,
                               relationshipStatus:
@@ -193,9 +193,9 @@ class _ActiveFriendsListState extends State<ActiveFriendsList> {
                               age: friendObject.age,
                               interestedIn: friendObject.interestedIn,
                               userPhotos: friendObject.userPictures,
-                              allFriends: friendObject.allFriends,
-                              allPlaces: friendObject.allPlaces,
-                              allBusinesses: friendObject.allBusinesses,
+                              allFriends: friendObject.allFriends!,
+                              allPlaces: friendObject.allPlaces!,
+                              allBusinesses: friendObject.allBusinesses!,
                             ),
                           );
                         });

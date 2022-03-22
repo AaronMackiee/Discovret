@@ -39,7 +39,7 @@ class ViewUserPhotos extends StatelessWidget {
       qrIconColor: kinactiveIconColor,
       qrIconSize: kinactiveIconSize,
       body: ViewUserPhoto(
-        imageString: dbUserProfileInfo.userPictures![indexPhotos!],
+        imageString: dbUserProfileInfo.userPictures[indexPhotos!],
         onPressedProfile: () {
           // dbUserProfileInfo.profilePicture = selectedPhoto;
           _db.updateProfilePhoto(field: 'ProfilePicture', value: selectedPhoto);

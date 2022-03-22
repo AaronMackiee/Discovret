@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+<key>HERECredentials</key>
+<dict>
+    <key>AccessKeyId</key>
+    <string>7_Wl9gIH-GVH_HlNxLnYBg</string>
+    <key>AccessKeySecret</key>
+    <string>cADy1cCJbRRSGmKkf2EAzU2W-GsvQyj0UwY7VypcmGolScp4fVYaDX83B3KYS_dXqXVPZ4gBNqaeeqjDJvNVgA</string>
+</dict>
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -43,8 +50,15 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<!-- Permission options for the `camera` group -->
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs camera access to scan QR codes and take pictures</string>
+	<!-- Permission options for the `location` group -->
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+   	<string>location-services</string>
+   	<string>gps</string>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>Need location when in use</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -53,6 +67,10 @@
     <string>Older devices need location.</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Can I have location always?</string>
+	<key>UIBackgroundModes</key>
+    <string>location</string>
+	<key>NSMotionUsageDescription</key>
+   	<string>Motion detection is needed to determine more accurate locations, when no GPS signal is found or used.</string>
 
     <!-- Permission options for the `mediaLibrary` group -->
     <key>NSAppleMusicUsageDescription</key>

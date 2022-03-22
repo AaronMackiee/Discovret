@@ -87,7 +87,7 @@ class UserProfileInfo with ChangeNotifier {
   //   notifyListeners();
   // }
   List<AllFriendsObject?> get listActiveFriends => this._listActiveFriends;
-  set listActiveFriends(List<AllFriendsObject?> value) {
+  set listActiveFriends(value) {
     this._listActiveFriends = value;
     notifyListeners();
   }
@@ -395,7 +395,9 @@ class UserProfileInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteFriend({required List<AllFriendsObject> object, required List<AllFriendsObject> list}) {
+  void deleteFriend(
+      {required List<AllFriendsObject> object,
+      required List<AllFriendsObject> list}) {
     list.remove(object);
     notifyListeners();
   }

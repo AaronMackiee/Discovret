@@ -35,6 +35,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
+  late FriendListObject friend;
+  late AllFriendsObject activeFriend;
+  late AllFriendsObject inactiveFriend;
+  late AllFriendsObject closeFriend;
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   // final Firestore _db = Firestore.instance;
   // User loggedInUser;
@@ -56,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     super.initState();
+
 
     // urlImage = _fs.downloadProfilePhoto();
     // getCurrentUser();
@@ -100,10 +105,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         Provider.of<UserProfileInfo>(context);
     final DbUserProfileInfo dbUserProfileInfo =
         Provider.of<DbUserProfileInfo>(context);
-    // final DbUserProfileInfo dbUserProfileSearchInfo =
-    //     Provider.of<DbUserProfileInfo>(context);
-    var size = MediaQuery.of(context).size;
     final FirebaseFirestore _db = FirebaseFirestore.instance;
+    Provider.of<DbUserProfileInfo>(context);
+    final _dbListOfFriends = Provider.of<List<FriendListObject>>(context);
+    final _dbAllFriendsList = Provider.of<List<AllFriendsObject>>(context);
     return DiscovretScaffold(
       index: 2,
       searchIconActive: Icon(Icons.person_search,
@@ -129,13 +134,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                   onTap: () {
                     Navigator.pushNamed(context, ProfilePhotosScreen.id);
                   },
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: deviceHeight * .10 + 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.all(Radius.circular(1000)),
+                      border: Border.all(color: Colors.white, width: 4.5),
+                    ),
                     child: CircleAvatar(
                       radius: deviceHeight * .10,
                       backgroundImage:
-                          NetworkImage(dbUserProfileInfo.profilePicture!),
+                          NetworkImage(dbUserProfileInfo.profilePicture),
                     ),
                   ),
                 ),
@@ -151,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   child: FittedBox(
                     fit: BoxFit.contain,
                     child: Text(
-                      '${dbUserProfileInfo.firstName ?? ''} ${dbUserProfileInfo.lastName ?? ''}',
+                      '${dbUserProfileInfo.firstName} ${dbUserProfileInfo.lastName}',
                       style: TextStyle(
                           fontFamily: 'Syne Mono',
                           // fontSize: 34,
@@ -171,18 +179,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: GestureDetector(
                     onTap: () {
-                      print(userProfileInfo.bio);
-                      print(userProfileInfo.religions);
-                      print(userProfileInfo.selectedReligions);
-                      print(userProfileInfo.listOtherLanguages);
-                      // print(userProfileInfo.selectedReligions);
-                      // print(userProfileInfo.listWorldReligions);
-                      // _db.collection('UserProfileSearchInfo').doc('hello').set({
-                      //   'OtherLanguages':
-                      //       FieldValue.arrayUnion(['spanish', 'english', 'yapese']),
-                      //   'cultures': FieldValue.arrayUnion(['aaron', 'nati'])
-                      // }, SetOptions(merge: true));
-
                       Navigator.pushNamed(context, ComplimentsList.id);
                     },
                     child: Container(
@@ -399,10 +395,176 @@ class _ProfileScreenState extends State<ProfileScreen>
                       Expanded(
                         child: ProfileInfoCard(
                           onpress: () {
-                            setState(() {
-                              Navigator.pushNamed(context, FriendsList.id);
-                              
-                            });
+                            Navigator.pushNamed(context, FriendsList.id);
+                            var test = userProfileInfo.listActiveFriends;
+                            print(test);
+                            if ((userProfileInfo.listActiveFriends.isEmpty &&
+                                    userProfileInfo
+                                        .listInActiveFriends.isEmpty &&
+                                    userProfileInfo.listCloseFriends.isEmpty) &&
+                                (_dbListOfFriends.isNotEmpty)) {
+                              // userProfileInfo.listActiveFriends.clear();
+                              for (friend in _dbListOfFriends) {
+                                friend.daysTillExp = friend.lastVisit
+                                        .toDate()
+                                        .difference(DateTime.now())
+                                        .inDays
+                                        .toInt() +
+                                    365;
+                                int visitsThisYear = friend.visitsThisYear;
+                                if (friend.daysTillExp >= 0 &&
+                                    visitsThisYear < 5) {
+                                  for (activeFriend in _dbAllFriendsList) {
+                                    if (friend.friendUid == activeFriend.uid) {
+                                      userProfileInfo.listActiveFriends.add(
+                                          AllFriendsObject(
+                                              uid: activeFriend.uid,
+                                              allFriends:
+                                                  activeFriend.allFriends!,
+                                              allBusinesses:
+                                                  activeFriend.allBusinesses!,
+                                              allPlaces:
+                                                  activeFriend.allPlaces!,
+                                              firstName: activeFriend.firstName,
+                                              lastName: activeFriend.lastName,
+                                              sex: activeFriend.sex,
+                                              firstLanguage:
+                                                  activeFriend.firstLanguage,
+                                              interestedIn:
+                                                  activeFriend.interestedIn,
+                                              relationshipStatus: activeFriend
+                                                  .relationshipStatus,
+                                              age: activeFriend.age,
+                                              gender: activeFriend.gender,
+                                              profilePicture:
+                                                  activeFriend.profilePicture,
+                                              bio: activeFriend.bio,
+                                              userPictures:
+                                                  activeFriend.userPictures,
+                                              totalVisits: friend.totalVisits,
+                                              visitsThisYear:
+                                                  friend.visitsThisYear,
+                                              daysTillExp: friend.daysTillExp,
+                                              safetyRating:
+                                                  activeFriend.safetyRating,
+                                              profileAccuracyRating:
+                                                  activeFriend
+                                                      .profileAccuracyRating,
+                                              reviewCount:
+                                                  activeFriend.reviewCount,
+                                              languages: activeFriend.languages,
+                                              countriesLivedIn:
+                                                  activeFriend.countriesLivedIn,
+                                              culturalHeritage:
+                                                  activeFriend.culturalHeritage,
+                                              religion: activeFriend.religion,
+                                              hobbiesInterest: activeFriend
+                                                  .hobbiesInterest));
+                                    }
+                                  }
+                                } else if (friend.daysTillExp < 0) {
+                                  for (inactiveFriend in _dbAllFriendsList) {
+                                    if (friend.friendUid ==
+                                        inactiveFriend.uid) {
+                                      userProfileInfo.listInActiveFriends.add(
+                                          AllFriendsObject(
+                                              uid: inactiveFriend.uid,
+                                              allFriends:
+                                                  inactiveFriend.allFriends,
+                                              allBusinesses:
+                                                  inactiveFriend.allBusinesses,
+                                              allPlaces:
+                                                  inactiveFriend.allPlaces,
+                                              firstName:
+                                                  inactiveFriend.firstName,
+                                              lastName: inactiveFriend.lastName,
+                                              sex: inactiveFriend.sex,
+                                              firstLanguage:
+                                                  inactiveFriend.firstLanguage,
+                                              interestedIn:
+                                                  inactiveFriend.interestedIn,
+                                              relationshipStatus: inactiveFriend
+                                                  .relationshipStatus,
+                                              age: inactiveFriend.age,
+                                              gender: inactiveFriend.gender,
+                                              profilePicture:
+                                                  inactiveFriend.profilePicture,
+                                              bio: inactiveFriend.bio,
+                                              userPictures:
+                                                  inactiveFriend.userPictures,
+                                              totalVisits: friend.totalVisits,
+                                              visitsThisYear:
+                                                  friend.visitsThisYear,
+                                              daysTillExp: friend.daysTillExp,
+                                              safetyRating:
+                                                  inactiveFriend.safetyRating,
+                                              profileAccuracyRating:
+                                                  inactiveFriend
+                                                      .profileAccuracyRating,
+                                              reviewCount:
+                                                  inactiveFriend.reviewCount,
+                                              languages:
+                                                  inactiveFriend.languages,
+                                              countriesLivedIn: inactiveFriend
+                                                  .countriesLivedIn,
+                                              culturalHeritage: inactiveFriend
+                                                  .culturalHeritage,
+                                              religion: inactiveFriend.religion,
+                                              hobbiesInterest: inactiveFriend
+                                                  .hobbiesInterest));
+                                    }
+                                  }
+                                } else if (friend.daysTillExp > 0 &&
+                                    visitsThisYear >= 5) {
+                                  for (closeFriend in _dbAllFriendsList) {
+                                    if (friend.friendUid == closeFriend.uid) {
+                                      userProfileInfo.listCloseFriends.add(
+                                          AllFriendsObject(
+                                              uid: closeFriend.uid,
+                                              allFriends:
+                                                  closeFriend.allFriends,
+                                              allBusinesses:
+                                                  closeFriend.allBusinesses,
+                                              allPlaces: closeFriend.allPlaces,
+                                              firstName: closeFriend.firstName,
+                                              lastName: closeFriend.lastName,
+                                              sex: closeFriend.sex,
+                                              firstLanguage:
+                                                  closeFriend.firstLanguage,
+                                              interestedIn:
+                                                  closeFriend.interestedIn,
+                                              relationshipStatus: closeFriend
+                                                  .relationshipStatus,
+                                              age: closeFriend.age,
+                                              gender: closeFriend.gender,
+                                              profilePicture:
+                                                  closeFriend.profilePicture,
+                                              bio: closeFriend.bio,
+                                              userPictures:
+                                                  closeFriend.userPictures,
+                                              totalVisits: friend.totalVisits,
+                                              visitsThisYear:
+                                                  friend.visitsThisYear,
+                                              daysTillExp: friend.daysTillExp,
+                                              safetyRating:
+                                                  closeFriend.safetyRating,
+                                              profileAccuracyRating: closeFriend
+                                                  .profileAccuracyRating,
+                                              reviewCount:
+                                                  closeFriend.reviewCount,
+                                              languages: closeFriend.languages,
+                                              countriesLivedIn:
+                                                  closeFriend.countriesLivedIn,
+                                              culturalHeritage:
+                                                  closeFriend.culturalHeritage,
+                                              religion: closeFriend.religion,
+                                              hobbiesInterest:
+                                                  closeFriend.hobbiesInterest));
+                                    }
+                                  }
+                                }
+                              }
+                            } else {}
                           },
                           cardBody: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -425,7 +587,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     color: Colors.black),
                               ),
                               Text(
-                                '${dbUserProfileInfo.allFriends!.length}',
+                                '${dbUserProfileInfo.allFriends?.length}',
                                 // textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 15,

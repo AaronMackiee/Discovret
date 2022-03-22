@@ -220,6 +220,7 @@ class _FriendConfirmationsState extends State<FriendConfirmations> {
                           'IsSafe': (safetyRatingValue == 'Yes') ? true : false,
                           'MyUid': _auth.getUser!.uid,
                           "VisitsThisYear": 1,
+                          "TotalVisits": 1,
                           "LastVisit": FieldValue.serverTimestamp(),
                           "FirstVisit": FieldValue.serverTimestamp(),
                           "FriendUid": confirmationObjectReview.friendUid,
