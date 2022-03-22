@@ -122,9 +122,4 @@ class _MapHomeScreenState extends State<MapHomeScreen>
     );
   }
 }
-// My API Key
-// AIzaSyDD26NaSB88bheJbTPpW4IbA-iuNnXoNj0
 
-
-// access key secret: cADy1cCJbRRSGmKkf2EAzU2W-GsvQyj0UwY7VypcmGolScp4fVYaDX83B3KYS_dXqXVPZ4gBNqaeeqjDJvNVgA
-// acess key id: 7_Wl9gIH-GVH_HlNxLnYBg
